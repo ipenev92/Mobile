@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">AndriodGames</string>
+    <string name="blind">BLIND</string>
+    <string name="name">NAME</string>
+    <string name="round_score">ROUND SCORE</string>
+    <string name="chips">CHIPS</string>
+    <string name="x">X</string>
+    <string name="multi">MULTI</string>
+    <string name="run_info">RUN INFO</string>
+    <string name="options">OPTIONS</string>
+    <string name="hands">HANDS</string>
+    <string name="discards">DISCARDS</string>
+    <string name="gold">GOLD</string>
+    <string name="ante">ANTE</string>
+    <string name="round">ROUND</string>
+    <string name="jokers">JOKERS</string>
+    <string name="consumables">CONSUMABLES</string>
+    <string name="hand">HAND</string>
+    <string name="play">PLAY</string>
+    <string name="sort_hand">SORT HAND</string>
+    <string name="rank">RANK</string>
+    <string name="suit">SUIT</string>
+    <string name="discard">DISCARD</string>
+    <string name="deck">DECK</string>
+</resources>

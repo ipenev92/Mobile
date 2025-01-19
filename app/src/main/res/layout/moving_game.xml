@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#CCCCCC">
+
+    <!-- Score TextView -->
+    <TextView
+        android:id="@+id/score_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Score: 0"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp"
+        android:background="#FFFFFF"
+        android:gravity="center"
+        android:elevation="4dp" />
+
+    <!-- Undo Button -->
+    <Button
+        android:id="@+id/button_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/score_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Undo"
+        android:textSize="18sp"
+        android:padding="8dp"
+        android:background="#FF9800"
+        android:textColor="#FFFFFF"
+        android:elevation="4dp" />
+
+    <!-- Game Grid -->
+    <GridLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:columnCount="4"
+        android:rowCount="4"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:layout_below="@id/button_undo"
+        android:layout_marginTop="16dp" />
+
+    <!-- Game Over Message -->
+    <TextView
+        android:id="@+id/game_over_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Game Over!"
+        android:textColor="#FF0000"
+        android:textSize="48sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="#AA000000" />
+
+</RelativeLayout>
