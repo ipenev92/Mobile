@@ -22,4 +22,9 @@
     <string name="suit">SUIT</string>
     <string name="discard">DISCARD</string>
     <string name="deck">DECK</string>
+    <string name="current_score">CURRENT_SCORE</string>
+    <string name="how_to">HOW TO</string>
+    <string name="exit">EXIT</string>
+    <string name="left">LEFT</string>
+    <string name="right">RIGHT</string>
 </resources>

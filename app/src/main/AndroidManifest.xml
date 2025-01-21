@@ -25,16 +25,17 @@
 
         <!-- MovingGame Activity -->
         <activity
-            android:name=".Activities.MovingGame"
+            android:name=".Activities.MovingGame.MovingGame"
             android:exported="true" />
 
+        <activity android:name=".Activities.Balatro.BalatroStart" />
+
         <!-- Balatro Activity -->
-        <activity android:name=".Activities.Balatro"
-            android:screenOrientation="landscape" />
+        <activity android:name=".Activities.Balatro.BalatroField" />
 
         <!-- HowTo Activity -->
         <activity
-            android:name=".Activities.HowTo"
+            android:name=".Activities.MovingGame.MovingGameHowTo"
             android:exported="true" />
 
     </application>

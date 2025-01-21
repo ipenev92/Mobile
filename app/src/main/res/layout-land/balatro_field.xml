@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
@@ -37,18 +37,29 @@
         <TextView
             android:id="@+id/blind"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="@string/blind"
             android:textColor="#263238" />
 
+        <!-- CURRENT SCORE -->
+        <TextView
+            android:id="@+id/current_score"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="@string/current_score"
+            android:textColor="#263238" />
+
         <!-- ROUND SCORE -->
         <TextView
             android:id="@+id/round_score"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
@@ -227,7 +238,7 @@
 
         <TextView
             android:id="@+id/jokers"
-            android:layout_width="0dp"
+            android:layout_width="350dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"

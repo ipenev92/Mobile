@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities;
+package com.example.androidgames.Activities.MovingGame;
 
 import android.os.Bundle;
 import android.os.Handler;

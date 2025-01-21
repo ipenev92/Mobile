@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities;
+package com.example.androidgames.Activities.Balatro;
 
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -10,13 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidgames.Deck;
 import com.example.androidgames.R;
 
-public class Balatro extends AppCompatActivity {
-    private final int HAND_SIZE = 8;
-
+public class BalatroField extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.balatro);
+        setContentView(R.layout.balatro_field);
 
         Deck deck = new Deck(this);
         int[] cardImages = new int[deck.getDeck().size()];
@@ -28,7 +26,7 @@ public class Balatro extends AppCompatActivity {
         }
 
         FrameLayout handLayout = findViewById(R.id.hand);
-        for (int i = 0; i < HAND_SIZE; i++) {
+        for (int i = 0; i < 8; i++) {
             ImageView cardImageView = new ImageView(this);
             cardImageView.setImageResource(cardImages[i]);
 
@@ -37,7 +35,7 @@ public class Balatro extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT
             );
 
-            params.leftMargin = i * 150;
+            params.leftMargin = i * 200;
 
             cardImageView.setLayoutParams(params);
             handLayout.addView(cardImageView);
