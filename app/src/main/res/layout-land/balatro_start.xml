@@ -1,124 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/white">
 
+    <!-- Balatro Logo/Image -->
     <ImageView
-        android:id="@+id/imageHolder"
-        android:layout_width="0dp"
+        android:id="@+id/logoImage"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:src="@drawable/balatro"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintWidth_percent="0.8"
-        android:layout_marginTop="8dp" />
+        android:contentDescription="@string/balatro"
+        android:scaleType="fitCenter" />
 
+    <!-- Buttons Section in Horizontal Layout -->
     <LinearLayout
-        android:id="@+id/deckHolder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/imageHolder"
-        app:layout_constraintBottom_toTopOf="@id/buttonsLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.6"
-        app:layout_constraintHeight_percent="0.4"
-        android:gravity="center">
-
-        <ImageButton
-            android:id="@+id/button_left_deck"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/button_previous"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
-        <ImageView
-            android:id="@+id/deckImage"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/deck_red"
-            android:scaleType="centerInside"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_margin="4dp">
-
-            <TextView
-                android:id="@+id/deck_name"
-                android:layout_width="160dp"
-                android:layout_height="40dp"
-                android:text="NAME"
-                android:textSize="14sp"
-                android:textColor="#000000"
-                android:gravity="center"
-                android:layout_margin="4dp"
-                android:background="@drawable/border" />
-
-            <TextView
-                android:id="@+id/deck_description"
-                android:layout_width="160dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="DESCRIPTION"
-                android:textSize="12sp"
-                android:textColor="#666666"
-                android:gravity="center"
-                android:layout_margin="4dp"
-                android:background="@drawable/border" />
-
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/button_right_deck"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/button_next"
-            android:layout_margin="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/buttonsLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/deckHolder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="16dp">
 
         <Button
             android:id="@+id/button_play"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/play" />
+            android:layout_weight="1"
+            android:text="@string/play"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/button_howTo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/how_to" />
+            android:layout_weight="1"
+            android:text="@string/how_to"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/button_exit"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_weight="1"
             android:text="@string/exit" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

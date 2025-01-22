@@ -27,4 +27,7 @@
     <string name="exit">EXIT</string>
     <string name="left">LEFT</string>
     <string name="right">RIGHT</string>
+    <string name="balatro">BALATRO</string>
+    <string name="next">NEXT</string>
+    <string name="previous">PREVIOUS</string>
 </resources>

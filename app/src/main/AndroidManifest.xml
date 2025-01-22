@@ -24,13 +24,10 @@
         </activity>
 
         <!-- MovingGame Activity -->
-        <activity
-            android:name=".Activities.MovingGame.MovingGame"
-            android:exported="true" />
+        <activity android:name=".Activities.MovingGame.MovingGame" />
 
         <activity android:name=".Activities.Balatro.BalatroStart" />
-
-        <!-- Balatro Activity -->
+        <activity android:name=".Activities.Balatro.BalatroDeckSelection" />
         <activity android:name=".Activities.Balatro.BalatroField" />
 
         <!-- HowTo Activity -->
