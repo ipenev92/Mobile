@@ -23,11 +23,13 @@
             </intent-filter>
         </activity>
 
-        <!-- MovingGame Activity -->
+        <!-- MovingGame -->
         <activity android:name=".Activities.MovingGame.MovingGame" />
 
+        <!-- Balatro -->
         <activity android:name=".Activities.Balatro.BalatroStart" />
         <activity android:name=".Activities.Balatro.BalatroDeckSelection" />
+        <activity android:name=".Activities.Balatro.BalatroBlind" />
         <activity android:name=".Activities.Balatro.BalatroField" />
 
         <!-- HowTo Activity -->

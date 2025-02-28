@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidgames.Deck;
+import com.example.androidgames.Activities.Balatro.Components.Deck;
 import com.example.androidgames.R;
 
 public class BalatroField extends AppCompatActivity {

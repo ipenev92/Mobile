@@ -1,7 +1,8 @@
-package com.example.androidgames;
+package com.example.androidgames.Activities.Balatro.Components;
 
 import android.content.Context;
-import android.content.res.Resources;
+
+import com.example.androidgames.R;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

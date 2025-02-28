@@ -58,7 +58,7 @@ public class BalatroDeckSelection extends AppCompatActivity {
 
         buttonPlay.setOnClickListener(v -> {
             Intent intent = new Intent(BalatroDeckSelection.this, BalatroBlind.class);
-            intent.putExtra("deck", deckNames[currentDeckIndex]);
+            intent.putExtra("deck", decks[currentDeckIndex]);
             startActivity(intent);
         });
 

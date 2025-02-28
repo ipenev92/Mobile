@@ -1,4 +1,4 @@
-package com.example.androidgames;
+package com.example.androidgames.Activities.Balatro.Components;
 
 import lombok.Getter;
 import lombok.Setter;

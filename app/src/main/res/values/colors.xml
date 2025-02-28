@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Background Colors -->
+    <color name="dark_green">#154734</color> <!-- Background -->
+    <color name="black">#1C1C1C</color> <!-- Left panel background -->
+    <color name="dark_gray">#3B3B3B</color> <!-- Disabled options background -->
+
+    <!-- Text Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="light_gray">#A0A0A0</color> <!-- For disabled text -->
+
+    <!-- Buttons and Highlights -->
+    <color name="blue">#0078D7</color> <!-- Small Blind color -->
+    <color name="red">#D32F2F</color> <!-- Score Red -->
+    <color name="green">#00C853</color> <!-- Chips and score numbers -->
+    <color name="orange">#FFA000</color> <!-- Buttons and "Select" button -->
+    <color name="gold">#FFD700</color>
+
+
+    <!-- Card Back -->
+
+    <color name="card_red">#D32F2F</color>
 </resources>
