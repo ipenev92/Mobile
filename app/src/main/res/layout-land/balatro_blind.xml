@@ -24,7 +24,7 @@
         <TextView
             android:id="@+id/blind"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="170dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
@@ -109,6 +109,7 @@
         </LinearLayout>
 
         <!-- Remaining Area Split -->
+        <!-- Remaining Area Split -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -120,15 +121,15 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
                 android:layout_weight="0.35"
                 android:orientation="vertical"
+                android:layout_marginEnd="5dp"
                 tools:ignore="NestedWeights">
 
                 <TextView
                     android:id="@+id/run_info"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="45dp"
                     android:layout_marginBottom="5dp"
                     android:background="@android:color/darker_gray"
                     android:gravity="center"
@@ -138,7 +139,7 @@
                 <TextView
                     android:id="@+id/options"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="45dp"
                     android:background="@android:color/darker_gray"
                     android:gravity="center"
                     android:text="@string/options"
@@ -156,14 +157,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
 
                     <TextView
                         android:id="@+id/hands"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="20dp"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
@@ -175,7 +176,7 @@
                     <TextView
                         android:id="@+id/discards"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
@@ -187,7 +188,7 @@
                 <TextView
                     android:id="@+id/gold"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="20dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@android:color/darker_gray"
@@ -205,23 +206,23 @@
                     <TextView
                         android:id="@+id/ante"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="20dp"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
-                        android:text="1/8"
+                        android:text="@string/ante"
                         android:textColor="#263238"
                         tools:ignore="NestedWeights" />
 
                     <TextView
                         android:id="@+id/round"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
-                        android:text="0"
+                        android:text="@string/round"
                         android:textColor="#263238" />
                 </LinearLayout>
             </LinearLayout>
@@ -453,14 +454,12 @@
             android:background="@android:color/white"
             android:orientation="vertical">
 
-            <!-- 60% Empty Space -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="6"
                 android:background="@android:color/white" />
 
-            <!-- 40% Deck Section -->
             <ImageView
                 android:id="@+id/deck"
                 android:layout_width="match_parent"
@@ -469,6 +468,16 @@
                 android:background="@color/white"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/deck_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="52/52"
+                android:textColor="#263238"
+                android:textSize="16sp"
+                android:paddingTop="5dp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

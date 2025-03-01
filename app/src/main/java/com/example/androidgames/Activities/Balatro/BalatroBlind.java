@@ -1,8 +1,11 @@
 package com.example.androidgames.Activities.Balatro;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidgames.Activities.Balatro.Components.Ante;
-import com.example.androidgames.Activities.Balatro.Components.Utils;
+import com.example.androidgames.Activities.Balatro.Components.GameData;
 import com.example.androidgames.R;
 
 public class BalatroBlind extends AppCompatActivity {
@@ -19,20 +22,19 @@ public class BalatroBlind extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_blind);
 
-        TextView anteText = findViewById(R.id.ante);
-        Ante ante = new Ante(Integer.parseInt(anteText.getText().toString().split("/")[0]));
-
         String selectedDeck = getIntent().getStringExtra("deck");
+        GameData gameData = new GameData(selectedDeck);
+
         setDeckImage(selectedDeck);
-        setBossBlindImage(ante);
-        setBlindsData(selectedDeck, ante);
-        disableButtons(ante);
-        setButtonListeners();
+        setBlindsData(gameData);
+        setBossBlindImage(gameData.getAnte());
+        disableButtons(gameData.getAnte());
+        setButtonListeners(gameData);
     }
 
     private void setDeckImage(String deck) {
         ImageView deckImage = findViewById(R.id.deck);
-        int deckImageName = getResources().getIdentifier(deck,
+         int deckImageName = getResources().getIdentifier(deck,
                 "drawable", getPackageName());
         deckImage.setImageResource(deckImageName);
     }
@@ -44,25 +46,27 @@ public class BalatroBlind extends AppCompatActivity {
         bossBlindImage.setImageResource(bossImageName);
     }
 
-    private void setBlindsData(String deck, Ante ante) {
+    private void setBlindsData(GameData gameData) {
         TextView handsText = findViewById(R.id.hands);
         TextView discardsText = findViewById(R.id.discards);
         TextView goldText = findViewById(R.id.gold);
+        TextView roundText = findViewById(R.id.round);
         TextView smallBlindPointsText = findViewById(R.id.small_blind_points);
         TextView bigBlindPointsText = findViewById(R.id.big_blind_points);
         TextView bossBlindName = findViewById(R.id.boss_blind_name);
         TextView bossBlindEffectText = findViewById(R.id.boss_blind_text);
         TextView bossBlindPointsText = findViewById(R.id.boss_blind_points);
 
-        handsText.setText(Utils.getHands(deck));
-        discardsText.setText(Utils.getDiscards(deck));
-        goldText.setText(Utils.getGold(deck));
+        handsText.setText(gameData.getHands());
+        discardsText.setText(gameData.getDiscards());
+        goldText.setText(gameData.getGold());
+        roundText.setText(gameData.getRound());
 
-        smallBlindPointsText.setText(ante.getSmallBlind());
-        bigBlindPointsText.setText(ante.getBigBlind());
-        bossBlindName.setText(ante.getBossName());
-        bossBlindPointsText.setText(ante.getBossBlind());
-        bossBlindEffectText.setText(ante.getBossEffectText());
+        smallBlindPointsText.setText(gameData.getAnte().getSmallBlind());
+        bigBlindPointsText.setText(gameData.getAnte().getBigBlind());
+        bossBlindName.setText(gameData.getAnte().getBossName());
+        bossBlindPointsText.setText(gameData.getAnte().getBossBlind());
+        bossBlindEffectText.setText(gameData.getAnte().getBossEffectText());
     }
 
     private void disableButtons(Ante ante) {
@@ -97,15 +101,27 @@ public class BalatroBlind extends AppCompatActivity {
         }
     }
 
-    private void setButtonListeners() {
+    private void setButtonListeners(GameData gameData) {
         Button smallBlindButton = findViewById(R.id.small_blind_button);
         Button bigBlindButton = findViewById(R.id.big_blind_button);
         Button bossBlindButton = findViewById(R.id.boss_blind_button);
 
-        smallBlindButton.setOnClickListener(v -> {
+        View.OnClickListener blindButtonClickListener = v -> {
             Intent intent = new Intent(BalatroBlind.this, BalatroField.class);
-            intent.putExtra("deck", decks[currentDeckIndex]);
+
+            int stage = (v == smallBlindButton) ? 1 : (v == bigBlindButton) ? 2 : 3;
+            int ante = (v == smallBlindButton) ?
+                    gameData.getAnte().getAnte()+1 : gameData.getAnte().getAnte();
+
+            gameData.getAnte().setStage(stage);
+            gameData.getAnte().setAnte(ante);
+            gameData.getAnte().setRound(gameData.getAnte().getRound()+1);
+            intent.putExtra("gameData", gameData);
             startActivity(intent);
-        });
+        };
+
+        smallBlindButton.setOnClickListener(blindButtonClickListener);
+        bigBlindButton.setOnClickListener(blindButtonClickListener);
+        bossBlindButton.setOnClickListener(blindButtonClickListener);
     }
 }

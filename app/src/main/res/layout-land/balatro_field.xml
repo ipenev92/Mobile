@@ -33,15 +33,95 @@
             android:text="@string/name"
             android:textColor="#263238" />
 
-        <!-- BLIND -->
-        <TextView
-            android:id="@+id/blind"
+        <LinearLayout
+            android:id="@+id/blind_container"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="110dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical">
+
+            <!-- Top 35% - Boss Text -->
+            <TextView
+                android:id="@+id/boss_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3.5"
+                android:gravity="center"
+                android:text="Boss Text"
+                android:textColor="#263238"
+                android:textSize="14sp" />
+
+            <!-- Bottom 65% - Split into Left & Right -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6.5"
+                android:orientation="horizontal">
+
+                <!-- Left 30% - Image -->
+                <ImageView
+                    android:id="@+id/blind_image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:scaleType="fitCenter"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <!-- Right 70% - Splitting into Three Parts -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:orientation="vertical">
+
+                    <!-- Top 30% - Score at least -->
+                    <TextView
+                        android:id="@+id/score_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:text="Score at least"
+                        android:textColor="#263238"
+                        android:textSize="12sp" />
+
+                    <!-- Middle 40% - Chips -->
+                    <TextView
+                        android:id="@+id/chipsNeeded"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+                        android:gravity="center"
+                        android:text="CHIPS"
+                        android:textColor="#263238"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <!-- Bottom 30% - Reward -->
+                    <TextView
+                        android:id="@+id/reward_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:text="Reward:"
+                        android:textColor="#263238"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ROUND SCORE -->
+        <TextView
+            android:id="@+id/round_score"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
-            android:text="@string/blind"
+            android:text="0"
             android:textColor="#263238" />
 
         <!-- CURRENT SCORE -->
@@ -52,18 +132,7 @@
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
-            android:text="@string/current_score"
-            android:textColor="#263238" />
-
-        <!-- ROUND SCORE -->
-        <TextView
-            android:id="@+id/round_score"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text="@string/round_score"
+            android:text=""
             android:textColor="#263238" />
 
         <!-- CHIPS, X, MULTI -->
@@ -73,6 +142,7 @@
             android:orientation="horizontal"
             android:paddingBottom="5dp">
 
+            <!-- Chips aligned to the right -->
             <TextView
                 android:id="@+id/chips"
                 android:layout_width="0dp"
@@ -80,10 +150,12 @@
                 android:layout_marginEnd="5dp"
                 android:layout_weight="4"
                 android:background="@android:color/darker_gray"
-                android:gravity="center"
-                android:text="@string/chips"
+                android:gravity="center|end"
+                android:paddingEnd="10dp"
+                android:text="0"
                 android:textColor="#263238" />
 
+            <!-- X centered -->
             <TextView
                 android:id="@+id/x"
                 android:layout_width="0dp"
@@ -95,14 +167,16 @@
                 android:text="@string/x"
                 android:textColor="#263238" />
 
+            <!-- Multi aligned to the left -->
             <TextView
-                android:id="@+id/multi"
+                android:id="@+id/mult"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:background="@android:color/darker_gray"
-                android:gravity="center"
-                android:text="@string/multi"
+                android:gravity="center|start"
+                android:paddingStart="10dp"
+                android:text="0"
                 android:textColor="#263238" />
         </LinearLayout>
 
@@ -126,7 +200,7 @@
                 <TextView
                     android:id="@+id/run_info"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="45dp"
                     android:layout_marginBottom="5dp"
                     android:background="@android:color/darker_gray"
                     android:gravity="center"
@@ -136,7 +210,7 @@
                 <TextView
                     android:id="@+id/options"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="45dp"
                     android:background="@android:color/darker_gray"
                     android:gravity="center"
                     android:text="@string/options"
@@ -269,17 +343,20 @@
         app:layout_constraintTop_toBottomOf="@id/right_top"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <FrameLayout
+        <!-- Changed from FrameLayout to LinearLayout -->
+        <LinearLayout
             android:id="@+id/hand"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="9"
             android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:paddingLeft="20dp"
-            android:clipChildren="false">
-    </FrameLayout>
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="20dp"
+            android:clipChildren="false"
+            android:orientation="horizontal"
+            android:padding="10dp">
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/right_bottom"
@@ -288,13 +365,13 @@
             android:layout_weight="4"
             android:orientation="horizontal">
 
-            <TextView
+            <Button
                 android:id="@+id/play"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray"
+                android:layout_weight="3"
+                android:background="#D32F2F"
                 android:gravity="center"
                 android:text="@string/play"
                 android:textColor="#263238"
@@ -304,7 +381,7 @@
                 android:id="@+id/middle_section"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:orientation="vertical"
                 android:layout_marginEnd="5dp"
                 tools:ignore="VisualLintBounds">
@@ -323,25 +400,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:baselineAligned="false"> <!-- Added to prevent baseline alignment -->
+                    android:baselineAligned="false">
 
-                    <TextView
+                    <Button
                         android:id="@+id/rank"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
-                        android:background="@android:color/darker_gray"
+                        android:background="#FFA000"
                         android:gravity="center"
                         android:text="@string/rank"
                         android:textColor="#263238" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/suit"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@android:color/darker_gray"
+                        android:background="#FFA000"
                         android:gravity="center"
                         android:text="@string/suit"
                         android:textColor="#263238"
@@ -349,28 +426,43 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <Button
                 android:id="@+id/discard"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray"
+                android:layout_weight="3"
+                android:background="#D32F2F"
                 android:gravity="center"
                 android:text="@string/discard"
                 android:textColor="#263238"
                 tools:ignore="VisualLintBounds" />
 
-            <TextView
-                android:id="@+id/deck"
+            <LinearLayout
+                android:id="@+id/deck_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray"
+                android:layout_weight="1.5"
                 android:gravity="center"
-                android:text="@string/deck"
-                android:textColor="#263238"
-                tools:ignore="VisualLintBounds" />
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/deck"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="6"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:id="@+id/deck_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="52/52"
+                    android:textColor="#263238" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

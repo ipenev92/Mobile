@@ -10,10 +10,10 @@
     <color name="light_gray">#A0A0A0</color> <!-- For disabled text -->
 
     <!-- Buttons and Highlights -->
-    <color name="blue">#0078D7</color> <!-- Small Blind color -->
-    <color name="red">#D32F2F</color> <!-- Score Red -->
-    <color name="green">#00C853</color> <!-- Chips and score numbers -->
-    <color name="orange">#FFA000</color> <!-- Buttons and "Select" button -->
+    <color name="blue">#0078D7</color>
+    <color name="red">#D32F2F</color>
+    <color name="green">#00C853</color>
+    <color name="orange">#FFA000</color>
     <color name="gold">#FFD700</color>
 
 

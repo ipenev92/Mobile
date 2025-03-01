@@ -1,116 +1,136 @@
 package com.example.androidgames.Activities.Balatro.Components;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import java.util.EnumMap;
+import java.util.Map;
+
 import lombok.Getter;
 
 @Getter
-public class PlanetData {
-    // Levels
-    private int highCardLevel;
-    private int pairLevel;
-    private int twoPairLevel;
-    private int threeOfAKindLevel;
-    private int straightLevel;
-    private int flushLevel;
-    private int fullHouseLevel;
-    private int fourOfAKindLevel;
-    private int straightFlushLevel;
-    private int fiveOfAKindLevel;
-    private int flushHouseLevel;
-    private int flushFiveLevel;
-
-    // Chips
-    private int highCardChips;
-    private int pairChips;
-    private int twoPairChips;
-    private int threeOfAKindChips;
-    private int straightChips;
-    private int flushChips;
-    private int fullHouseChips;
-    private int fourOfAKindChips;
-    private int straightFlushChips;
-    private int fiveOfAKindChips;
-    private int flushHouseChips;
-    private int flushFiveChips;
-
-    // Mult
-    private int highCardMult;
-    private int pairMult;
-    private int twoPairMult;
-    private int threeOfAKindMult;
-    private int straightMult;
-    private int flushMult;
-    private int fullHouseMult;
-    private int fourOfAKindMult;
-    private int straightFlushMult;
-    private int fiveOfAKindMult;
-    private int flushHouseMult;
-    private int flushFiveMult;
-
-    // Played
-    private int highCardPlayed;
-    private int pairPlayed;
-    private int twoPairPlayed;
-    private int threeOfAKindPlayed;
-    private int straightPlayed;
-    private int flushPlayed;
-    private int fullHousePlayed;
-    private int fourOfAKindPlayed;
-    private int straightFlushPlayed;
-    private int fiveOfAKindPlayed;
-    private int flushHousePlayed;
-    private int flushFivePlayed;
+public class PlanetData implements Parcelable {
+    private final Map<HandType, Integer> levels = new EnumMap<>(HandType.class);
+    private final Map<HandType, Integer> chips = new EnumMap<>(HandType.class);
+    private final Map<HandType, Integer> multipliers = new EnumMap<>(HandType.class);
+    private final Map<HandType, Integer> playedCounts = new EnumMap<>(HandType.class);
 
     public PlanetData() {
-        this.highCardLevel = 1;
-        this.pairLevel = 1;
-        this.twoPairLevel = 1;
-        this.threeOfAKindLevel = 1;
-        this.straightLevel = 1;
-        this.flushLevel = 1;
-        this.fullHouseLevel = 1;
-        this.fourOfAKindLevel = 1;
-        this.straightFlushLevel = 1;
-        this.fiveOfAKindLevel = 1;
-        this.flushHouseLevel = 1;
-        this.flushFiveLevel = 1;
+        initializeDefaultValues();
+    }
 
-        this.highCardChips = 5;
-        this.pairChips = 10;
-        this.twoPairChips = 20;
-        this.threeOfAKindChips = 30;
-        this.straightChips = 30;
-        this.flushChips = 35;
-        this.fullHouseChips = 40;
-        this.fourOfAKindChips = 60;
-        this.straightFlushChips = 100;
-        this.fiveOfAKindChips = 120;
-        this.flushHouseChips = 140;
-        this.flushFiveChips = 160;
+    private void initializeDefaultValues() {
+        for (HandType type : HandType.values()) {
+            levels.put(type, 1);
+            playedCounts.put(type, 0);
+            chips.put(type, getDefaultChips(type));
+            multipliers.put(type, getDefaultMultiplier(type));
+        }
+    }
 
-        this.highCardMult = 1;
-        this.pairMult = 2;
-        this.twoPairMult = 2;
-        this.threeOfAKindMult = 3;
-        this.straightMult = 4;
-        this.flushMult = 4;
-        this.fullHouseMult = 4;
-        this.fourOfAKindMult = 7;
-        this.straightFlushMult = 8;
-        this.fiveOfAKindMult = 12;
-        this.flushHouseMult = 14;
-        this.flushFiveMult = 16;
+    private int getDefaultChips(HandType type) {
+        switch (type) {
+            case HIGH_CARD: return 5;
+            case PAIR: return 10;
+            case TWO_PAIR: return 20;
+            case THREE_OF_A_KIND: return 30;
+            case STRAIGHT: return 30;
+            case FLUSH: return 35;
+            case FULL_HOUSE: return 40;
+            case FOUR_OF_A_KIND: return 60;
+            case STRAIGHT_FLUSH: return 100;
+            case FIVE_OF_A_KIND: return 120;
+            case FLUSH_HOUSE: return 140;
+            case FLUSH_FIVE: return 160;
+            default: return 1;
+        }
+    }
 
-        this.highCardPlayed = 0;
-        this.pairPlayed = 0;
-        this.twoPairPlayed = 0;
-        this.threeOfAKindPlayed = 0;
-        this.straightPlayed = 0;
-        this.flushPlayed = 0;
-        this.fullHousePlayed = 0;
-        this.fourOfAKindPlayed = 0;
-        this.straightFlushPlayed = 0;
-        this.fiveOfAKindPlayed = 0;
-        this.flushHousePlayed = 0;
-        this.flushFivePlayed = 0;
+    private int getDefaultMultiplier(HandType type) {
+        switch (type) {
+            case HIGH_CARD: return 1;
+            case PAIR: return 2;
+            case TWO_PAIR: return 2;
+            case THREE_OF_A_KIND: return 3;
+            case STRAIGHT: return 4;
+            case FLUSH: return 4;
+            case FULL_HOUSE: return 4;
+            case FOUR_OF_A_KIND: return 7;
+            case STRAIGHT_FLUSH: return 8;
+            case FIVE_OF_A_KIND: return 12;
+            case FLUSH_HOUSE: return 14;
+            case FLUSH_FIVE: return 16;
+            default: return 1;
+        }
+    }
+
+    public int getChipsByHand(HandType type) {
+        return this.chips.getOrDefault(type, 1);
+    }
+
+    public int getMultByHand(HandType type) {
+        return this.multipliers.getOrDefault(type, 1);
+    }
+
+    public int getLevelByHand(HandType type) {
+        return this.levels.getOrDefault(type, 1);
+    }
+
+    public int getPlayedByHand(HandType type) {
+        return this.playedCounts.getOrDefault(type, 1);
+    }
+
+    public void incrementChips(HandType type) {
+        this.chips.put(type, this.chips.getOrDefault(type, 0) + 1);
+    }
+
+    public void incrementMult(HandType type) {
+        this.multipliers.put(type, this.multipliers.getOrDefault(type, 0) + 1);
+    }
+
+    public void incrementLevel(HandType type) {
+        this.levels.put(type, this.levels.getOrDefault(type, 0) + 1);
+    }
+
+    public void incrementPlayed(HandType type) {
+        this.playedCounts.put(type, this.playedCounts.getOrDefault(type, 0) + 1);
+    }
+
+    /* ========== PARCELABLE IMPLEMENTATION ========== */
+    protected PlanetData(Parcel in) {
+        for (HandType type : HandType.values()) {
+            levels.put(type, in.readInt());
+            playedCounts.put(type, in.readInt());
+            chips.put(type, in.readInt());
+            multipliers.put(type, in.readInt());
+        }
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        for (HandType type : HandType.values()) {
+            parcel.writeInt(levels.getOrDefault(type, 1));
+            parcel.writeInt(playedCounts.getOrDefault(type, 0));
+            parcel.writeInt(chips.getOrDefault(type, getDefaultChips(type)));
+            parcel.writeInt(multipliers.getOrDefault(type, getDefaultMultiplier(type)));
+        }
+    }
+
+    public static final Creator<PlanetData> CREATOR = new Creator<PlanetData>() {
+        @Override
+        public PlanetData createFromParcel(Parcel in) {
+            return new PlanetData(in);
+        }
+
+        @Override
+        public PlanetData[] newArray(int size) {
+            return new PlanetData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 }
