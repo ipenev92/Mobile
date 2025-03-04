@@ -1,7 +1,5 @@
 package com.example.androidgames.Activities.Balatro.Components;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -15,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class Deck {
     private final String deckName;
-    private ArrayList<PlayingCard> deck;
+    private final ArrayList<PlayingCard> deck;
 
     public Deck(String selectedDeck) {
         this.deckName = selectedDeck;
@@ -88,12 +86,11 @@ public class Deck {
                 if (name.startsWith("card_")) {
                     String[] parts = name.split("_");
 
-                    PlayingCard playingCard = new PlayingCard(name, parts[1], parts[3],
-                            Enhancement.BASE, Edition.BASE, Seal.BASE);
+                    PlayingCard playingCard = new PlayingCard(name, parts[1], parts[3]);
                     deck.add(playingCard);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
         }
 

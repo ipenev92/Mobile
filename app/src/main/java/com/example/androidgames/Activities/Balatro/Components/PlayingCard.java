@@ -1,28 +1,22 @@
 package com.example.androidgames.Activities.Balatro.Components;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PlayingCard extends Card {
+public class PlayingCard {
+    String name;
     private String value;
     private String suit;
-    private Enhancement enhancement;
-    private Seal seal;
+
     private int chips;
     private int mult;
 
-    public PlayingCard(String name, String value, String suit, Enhancement enhancement,
-                       Edition edition, Seal seal) {
-        super(name, edition);
+    public PlayingCard(String name, String value, String suit) {
+        this.name = name;
         this.value = value;
         this.suit = suit;
-        this.enhancement = enhancement;
-        this.seal = seal;
         this.chips = getCardChips();
         this.mult = 0;
     }

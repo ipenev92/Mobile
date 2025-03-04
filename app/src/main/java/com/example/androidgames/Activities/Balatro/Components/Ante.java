@@ -1,9 +1,5 @@
 package com.example.androidgames.Activities.Balatro.Components;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
 import java.util.Random;
 
 import lombok.Getter;

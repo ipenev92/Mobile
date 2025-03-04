@@ -30,8 +30,7 @@ public class PlanetData {
             case HIGH_CARD: return 5;
             case PAIR: return 10;
             case TWO_PAIR: return 20;
-            case THREE_OF_A_KIND: return 30;
-            case STRAIGHT: return 30;
+            case THREE_OF_A_KIND: case STRAIGHT: return 30;
             case FLUSH: return 35;
             case FULL_HOUSE: return 40;
             case FOUR_OF_A_KIND: return 60;
@@ -45,19 +44,15 @@ public class PlanetData {
 
     private int getDefaultMultiplier(HandType type) {
         switch (type) {
-            case HIGH_CARD: return 1;
-            case PAIR: return 2;
-            case TWO_PAIR: return 2;
+            case PAIR: case TWO_PAIR: return 2;
             case THREE_OF_A_KIND: return 3;
-            case STRAIGHT: return 4;
-            case FLUSH: return 4;
-            case FULL_HOUSE: return 4;
+            case STRAIGHT: case FLUSH: case FULL_HOUSE: return 4;
             case FOUR_OF_A_KIND: return 7;
             case STRAIGHT_FLUSH: return 8;
             case FIVE_OF_A_KIND: return 12;
             case FLUSH_HOUSE: return 14;
             case FLUSH_FIVE: return 16;
-            default: return 1;
+            case HIGH_CARD: default: return 1;
         }
     }
 
@@ -73,23 +68,8 @@ public class PlanetData {
         return this.levels.getOrDefault(type, 1);
     }
 
-    public int getPlayedByHand(HandType type) {
-        return this.playedCounts.getOrDefault(type, 1);
-    }
-
-    public void incrementChips(HandType type) {
-        this.chips.put(type, this.chips.getOrDefault(type, 0) + 1);
-    }
-
-    public void incrementMult(HandType type) {
-        this.multipliers.put(type, this.multipliers.getOrDefault(type, 0) + 1);
-    }
-
     public void incrementLevel(HandType type) {
         this.levels.put(type, this.levels.getOrDefault(type, 0) + 1);
     }
 
-    public void incrementPlayed(HandType type) {
-        this.playedCounts.put(type, this.playedCounts.getOrDefault(type, 0) + 1);
-    }
 }
