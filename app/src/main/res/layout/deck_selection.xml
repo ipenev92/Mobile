@@ -15,15 +15,15 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <!-- Left Arrow -->
-        <ImageButton
+        <ImageView
             android:id="@+id/button_left_deck"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/button_previous"
-            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/previous"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginEnd="12dp"
+            android:clickable="true"
+            android:focusable="true" />
 
         <!-- Deck Image and Info -->
         <LinearLayout
@@ -68,15 +68,15 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Right Arrow -->
-        <ImageButton
+        <ImageView
             android:id="@+id/button_right_deck"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/button_next"
-            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/next"
-            android:layout_marginStart="12dp" />
+            android:layout_marginStart="40dp"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
     <!-- Spacer -->

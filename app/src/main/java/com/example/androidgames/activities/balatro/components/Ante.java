@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class Ante {
     private int stage;
-    private int ante;
+    private int anteValue;
     private int round;
     private String smallBlind;
     private String bigBlind;
@@ -19,9 +19,13 @@ public class Ante {
     private String bossEffectText;
     private String bossImage;
 
+    private Random random;
+
     public Ante(int ante) {
+        this.random = new Random();
+
         this.stage = 1;
-        this.ante = ante;
+        this.anteValue = ante;
         this.round = 0;
         this.bossEffect = getRandomBossEffect();
         this.bossName = getBossBlindName();
@@ -35,7 +39,8 @@ public class Ante {
 
     private BossEffect getRandomBossEffect() {
         BossEffect[] effects = BossEffect.values();
-        return effects[new Random().nextInt(effects.length)];
+        int randomNum = this.random.nextInt(effects.length);
+        return effects[randomNum];
     }
 
     private String getBossBlindName() {
@@ -93,18 +98,19 @@ public class Ante {
     }
 
     private String getSmallBlindPoints() {
-        int[] small = {1, 800, 2000, 5000, 11000, 20000, 35000, 50000};
-        return String.valueOf(small[this.ante]);
+        int[] small = {300, 800, 2000, 5000, 11000, 20000, 35000, 50000};
+        return String.valueOf(small[this.anteValue]);
     }
 
     private String getBigBlindPoints() {
         int[] big = {450, 1200, 3000, 7500, 16500, 30000, 52500, 75000};
-        return String.valueOf(big[this.ante]);
+        return String.valueOf(big[this.anteValue]);
     }
 
     private String getBossBlindPoints(BossEffect effect) {
         int[] boss = {600, 1600, 4000, 10000, 22000, 40000, 70000, 100000};
-        return String.valueOf(effect == BossEffect.WALL ? boss[this.ante] * 2 : boss[this.ante]);
+        return String.valueOf(effect == BossEffect.WALL ? boss[this.anteValue] * 2 :
+                boss[this.anteValue]);
     }
 
     public void updateBlinds() {

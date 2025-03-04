@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PlayingCard {
-    String name;
+    private String name;
     private String value;
     private String suit;
 

@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import android.util.Log;
 
@@ -13,28 +13,31 @@ import lombok.Getter;
 @Getter
 public class Deck {
     private final String deckName;
-    private final ArrayList<PlayingCard> deck;
+    private final ArrayList<PlayingCard> deckList;
+    private final Random random;
 
     public Deck(String selectedDeck) {
         this.deckName = selectedDeck;
-        this.deck = generateDeck();
+        this.deckList = generateDeck();
+
+         this.random = new Random();
     }
 
     private ArrayList<PlayingCard> generateDeck() {
         ArrayList<PlayingCard> deck;
 
         switch (this.deckName) {
-            case "deck_abandoned": deck = generateAbandonedDeck(); break;
-            case "deck_checkered": deck = generateCheckeredDeck(); break;
-            case "deck_erratic": deck = generateErraticDeck(); break;
-            default: deck = generateDefaultDeck();
+            case "deck_abandoned": deck = this.generateAbandonedDeck(); break;
+            case "deck_checkered": deck = this.generateCheckeredDeck(); break;
+            case "deck_erratic": deck = this.generateErraticDeck(); break;
+            default: deck = this.generateDefaultDeck();
         }
 
         return deck;
     }
 
     private ArrayList<PlayingCard> generateAbandonedDeck() {
-        ArrayList<PlayingCard> normalDeck = generateDefaultDeck();
+        ArrayList<PlayingCard> normalDeck = this.generateDefaultDeck();
         ArrayList<PlayingCard> deck = new ArrayList<>();
 
         for (PlayingCard card : normalDeck) {
@@ -48,7 +51,7 @@ public class Deck {
     }
 
     private ArrayList<PlayingCard> generateCheckeredDeck() {
-        ArrayList<PlayingCard> normalDeck = generateDefaultDeck();
+        ArrayList<PlayingCard> normalDeck = this.generateDefaultDeck();
         ArrayList<PlayingCard> deck = new ArrayList<>();
 
         for (PlayingCard card : normalDeck) {
@@ -62,12 +65,11 @@ public class Deck {
     }
 
     private ArrayList<PlayingCard> generateErraticDeck() {
-        ArrayList<PlayingCard> normalDeck = generateDeck();
+        ArrayList<PlayingCard> normalDeck = this.generateDeck();
         ArrayList<PlayingCard> deck = new ArrayList<>();
 
-        Random random = new Random();
         for (int i = 0; i < normalDeck.size(); i++) {
-            PlayingCard card = normalDeck.get(random.nextInt(52));
+            PlayingCard card = normalDeck.get(this.random.nextInt(52));
             deck.add(card);
         }
 

@@ -1,4 +1,4 @@
-package com.example.androidgames.activities.MovingGame;
+package com.example.androidgames.activities.moving_game;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -29,8 +29,7 @@ import lombok.Getter;
 @Getter
 @SuppressLint("ClickableViewAccessibility")
 public class MovingGame extends AppCompatActivity {
-    private int GRID_SIZE;
-
+    private int gridSize;
     private GridLayout gridLayout;
     private Grid[][] grid;
     private Grid[][] undoGrid;
@@ -39,6 +38,7 @@ public class MovingGame extends AppCompatActivity {
     private String playerName;
     private Chronometer chronometer;
     private DatabaseManager databaseManager;
+    private final Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,8 @@ public class MovingGame extends AppCompatActivity {
         Button redo = findViewById(R.id.btn_turn_comeback);
         redo.setOnClickListener(v -> {
             if (this.undoGrid != null) {
-                for (int i = 0; i < this.GRID_SIZE; i++) {
-                    for (int j = 0; j < this.GRID_SIZE; j++) {
+                for (int i = 0; i < this.gridSize; i++) {
+                    for (int j = 0; j < this.gridSize; j++) {
                         this.grid[i][j].setValue(this.undoGrid[i][j].getValue());
                         updateNumberView(this.grid[i][j]);
                     }
@@ -99,7 +99,7 @@ public class MovingGame extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
 
-                    this.GRID_SIZE = size;
+                    this.gridSize = size;
                     startGame();
                 })
                 .setNegativeButton("Cancel", (dialog, which) ->
@@ -108,10 +108,10 @@ public class MovingGame extends AppCompatActivity {
 
     private void startGame() {
         this.gridLayout.removeAllViews();
-        this.gridLayout.setColumnCount(this.GRID_SIZE);
-        this.gridLayout.setRowCount(this.GRID_SIZE);
+        this.gridLayout.setColumnCount(this.gridSize);
+        this.gridLayout.setRowCount(this.gridSize);
 
-        this.grid = new Grid[this.GRID_SIZE][this.GRID_SIZE];
+        this.grid = new Grid[this.gridSize][this.gridSize];
         initializeGameBoard();
 
         for (int i = 0; i < 2; i++) {
@@ -121,11 +121,11 @@ public class MovingGame extends AppCompatActivity {
     }
 
     private void initializeGameBoard() {
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
-                Grid grid = new Grid(0, i, j);
-                this.grid[i][j] = grid;
-                addNumberToGrid(grid);
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
+                Grid board = new Grid(0, i, j);
+                this.grid[i][j] = board;
+                addNumberToGrid(board);
             }
         }
     }
@@ -149,7 +149,7 @@ public class MovingGame extends AppCompatActivity {
 
     private void updateNumberView(Grid grid) {
         TextView tile = (TextView) this.gridLayout.getChildAt(grid.getRow()
-                * this.GRID_SIZE + grid.getCol());
+                * this.gridSize + grid.getCol());
         if (grid.getValue() == 0) {
             tile.setBackgroundColor(ContextCompat.getColor(this, R.color.tile_empty));
             tile.setText("");
@@ -161,8 +161,8 @@ public class MovingGame extends AppCompatActivity {
 
     private void addRandomNumbers() {
         List<Grid> emptySlots = new ArrayList<>();
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
                 if (this.grid[i][j].getValue() == 0) {
                     emptySlots.add(this.grid[i][j]);
                 }
@@ -170,9 +170,9 @@ public class MovingGame extends AppCompatActivity {
         }
 
         if (!emptySlots.isEmpty()) {
-            Grid grid = emptySlots.get(new Random().nextInt(emptySlots.size()));
-            grid.setValue(new Random().nextInt(10) < 9 ? 2 : 4);
-            updateNumberView(grid);
+            Grid board = emptySlots.get(this.random.nextInt(emptySlots.size()));
+            board.setValue(this.random.nextInt(10) < 9 ? 2 : 4);
+            updateNumberView(board);
         }
     }
 
@@ -236,6 +236,7 @@ public class MovingGame extends AppCompatActivity {
                 flipBoardHorizontally();
                 transposeBoard();
                 break;
+            default:
         }
 
         resetMergedStatus();
@@ -244,34 +245,19 @@ public class MovingGame extends AppCompatActivity {
 
     private void moveLeft() {
         boolean moved = false;
-
-        for (int row = 0; row < this.GRID_SIZE; row++) {
-            for (int col = 1; col < this.GRID_SIZE; col++) {
-                if (this.grid[row][col].getValue() != 0) {
-                    int targetCol = col;
-
-                    for (int nextCol = col - 1; nextCol >= 0; nextCol--) {
-                        if (this.grid[row][nextCol].getValue() == 0) {
-                            targetCol = nextCol;
-                        } else if (this.grid[row][nextCol].getValue() ==
-                                this.grid[row][col].getValue() && !this.grid[row][nextCol].isMerged()) {
-                            targetCol = nextCol;
-                            updateScore(this.grid[row][col].getValue() * 2);
-                            break;
-                        } else {
-                            break;
-                        }
-                    }
-
+        for (int row = 0; row < this.gridSize; row++) {
+            for (int col = 1; col < this.gridSize; col++) {
+                int value = this.grid[row][col].getValue();
+                if (value != 0) {
+                    int targetCol = findTargetColumn(row, col);
                     if (targetCol != col) {
-                        if (this.grid[row][targetCol].getValue() == this.grid[row][col].getValue()
+                        if (this.grid[row][targetCol].getValue() == value
                                 && !this.grid[row][targetCol].isMerged()) {
                             this.grid[row][targetCol].fuse(this.grid[row][col]);
                         } else {
-                            this.grid[row][targetCol].setValue(this.grid[row][col].getValue());
+                            this.grid[row][targetCol].setValue(value);
                             this.grid[row][col].setValue(0);
                         }
-
                         updateNumberView(this.grid[row][targetCol]);
                         updateNumberView(this.grid[row][col]);
                         moved = true;
@@ -279,27 +265,45 @@ public class MovingGame extends AppCompatActivity {
                 }
             }
         }
-
         if (moved) {
             addRandomNumbers();
         }
     }
 
+    private int findTargetColumn(int row, int col) {
+        int value = this.grid[row][col].getValue();
+        int targetCol = col;
+        for (int nextCol = col - 1; nextCol >= 0; nextCol--) {
+            int nextValue = this.grid[row][nextCol].getValue();
+            if (nextValue == 0) {
+                targetCol = nextCol;
+            } else {
+                if (nextValue == value && !this.grid[row][nextCol].isMerged()) {
+                    targetCol = nextCol;
+                    updateScore(value * 2);
+                }
+                break;
+            }
+        }
+        return targetCol;
+    }
+
+
     // Right moves
     private void flipBoardHorizontally() {
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE / 2; j++) {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize / 2; j++) {
                 Grid temp = this.grid[i][j];
-                this.grid[i][j] = this.grid[i][this.GRID_SIZE - 1 - j];
-                this.grid[i][this.GRID_SIZE - 1 - j] = temp;
+                this.grid[i][j] = this.grid[i][this.gridSize - 1 - j];
+                this.grid[i][this.gridSize - 1 - j] = temp;
             }
         }
     }
 
     // Up/Down moves)
     private void transposeBoard() {
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = i + 1; j < this.GRID_SIZE; j++) {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = i + 1; j < this.gridSize; j++) {
                 Grid temp = this.grid[i][j];
                 this.grid[i][j] = this.grid[j][i];
                 this.grid[j][i] = temp;
@@ -308,17 +312,17 @@ public class MovingGame extends AppCompatActivity {
     }
 
     private void resetMergedStatus() {
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
                 this.grid[i][j].resetFuse();
             }
         }
     }
 
     private void saveLastState() {
-        this.undoGrid = new Grid[this.GRID_SIZE][this.GRID_SIZE];
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
+        this.undoGrid = new Grid[this.gridSize][this.gridSize];
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
                 this.undoGrid[i][j] = new Grid(this.grid[i][j].getValue(), i, j);
             }
         }
@@ -341,8 +345,8 @@ public class MovingGame extends AppCompatActivity {
         boolean victory = false;
         int points = 2048;
 
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
                 if (this.grid[i][j].getValue() == points) {
                     victory = true;
                     break;
@@ -353,46 +357,25 @@ public class MovingGame extends AppCompatActivity {
     }
 
     private boolean checkGameOver() {
-        boolean loss = true;
+        for (int i = 0; i < this.gridSize; i++) {
+            for (int j = 0; j < this.gridSize; j++) {
+                int current = this.grid[i][j].getValue();
 
-        for (int i = 0; i < this.GRID_SIZE; i++) {
-            for (int j = 0; j < this.GRID_SIZE; j++) {
-                if (this.grid[i][j].getValue() == 0) {
-                    loss = false;
-                    break;
+                if (current == 0) {
+                    return false;
+                }
+
+                if ((i > 0 && current == this.grid[i - 1][j].getValue()) ||
+                        (i < this.gridSize - 1 && current == this.grid[i + 1][j].getValue()) ||
+                        (j > 0 && current == this.grid[i][j - 1].getValue()) ||
+                        (j < this.gridSize - 1 && current == this.grid[i][j + 1].getValue())) {
+                    return false;
                 }
             }
         }
-
-        if (loss) {
-            for (int i = 0; i < this.GRID_SIZE; i++) {
-                for (int j = 0; j < this.GRID_SIZE; j++) {
-                    int valorActual = this.grid[i][j].getValue();
-
-                    if (i > 0 && valorActual == this.grid[i - 1][j].getValue()) {
-                        loss = false;
-                        break;
-                    }
-                    if (i < this.GRID_SIZE - 1 && valorActual == this.grid[i + 1][j].getValue()) {
-                        loss = false;
-                        break;
-                    }
-
-                    if (j > 0 && valorActual == this.grid[i][j - 1].getValue()) {
-                        loss = false;
-                        break;
-                    }
-
-                    if (j < this.GRID_SIZE - 1 && valorActual == this.grid[i][j + 1].getValue()) {
-                        loss = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return loss;
+        return true;
     }
+
 
     private void endGame(String message) {
         this.chronometer.stop();

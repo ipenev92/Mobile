@@ -1,4 +1,4 @@
-package com.example.androidgames.activities.MovingGame;
+package com.example.androidgames.activities.moving_game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

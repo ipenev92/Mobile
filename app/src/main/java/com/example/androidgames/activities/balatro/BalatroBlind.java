@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidgames.Activities.Balatro.Components.Ante;
-import com.example.androidgames.Activities.Balatro.Components.GameData;
-import com.example.androidgames.Activities.Balatro.Components.GameDataHolder;
-import com.example.androidgames.Activities.Balatro.Components.Joker;
-import com.example.androidgames.Activities.Balatro.Components.TarotCard;
+import com.example.androidgames.activities.balatro.components.Ante;
+import com.example.androidgames.activities.balatro.components.GameData;
+import com.example.androidgames.activities.balatro.components.GameDataHolder;
+import com.example.androidgames.activities.balatro.components.Joker;
+import com.example.androidgames.activities.balatro.components.TarotCard;
 import com.example.androidgames.R;
 
 import java.util.List;
@@ -27,6 +27,7 @@ import java.util.Locale;
 
 @SuppressLint("DiscouragedApi")
 public class BalatroBlind extends AppCompatActivity {
+    private static final String DRAWABLE = "drawable";
     private GameData gameData;
     private String selectedDeck;
 
@@ -48,30 +49,30 @@ public class BalatroBlind extends AppCompatActivity {
                 return;
             }
 
-            gameData = new GameData(selectedDeck);
-            GameDataHolder.gameData = gameData;
+            this.gameData = new GameData(selectedDeck);
+            GameDataHolder.gameData = this.gameData;
         }
 
-        setDeckImage();
-        setBlindsData();
-        setBossBlindImage();
-        disableButtons();
-        setButtonListeners();
-        displayJokers();
-        displayConsumables();
+        this.setDeckImage();
+        this.setBlindsData();
+        this.setBossBlindImage();
+        this.disableButtons();
+        this.setButtonListeners();
+        this.displayJokers();
+        this.displayConsumables();
     }
 
     private void setDeckImage() {
         ImageView deckImage = findViewById(R.id.deck);
          int deckImageName = getResources().getIdentifier(this.selectedDeck,
-                "drawable", getPackageName());
+                DRAWABLE, getPackageName());
         deckImage.setImageResource(deckImageName);
     }
 
     private void setBossBlindImage() {
         ImageView bossBlindImage = findViewById(R.id.boss_blind_image);
         int bossImageName = getResources().getIdentifier(this.gameData.getAnte().getBossImage(),
-                "drawable", getPackageName());
+                DRAWABLE, getPackageName());
         bossBlindImage.setImageResource(bossImageName);
     }
 
@@ -87,18 +88,19 @@ public class BalatroBlind extends AppCompatActivity {
         TextView bossBlindEffectText = findViewById(R.id.boss_blind_text);
         TextView bossBlindPointsText = findViewById(R.id.boss_blind_points);
 
-        handsText.setText(gameData.getHands());
-        discardsText.setText(gameData.getDiscards());
-        goldText.setText(String.format("$%s", gameData.getGold()));
-        anteText.setText(String.format(Locale.US, "%d/8", gameData.getAnte().getAnte()));
-        roundText.setText(gameData.getRound());
+        handsText.setText(this.gameData.getHands());
+        discardsText.setText(this.gameData.getDiscards());
+        goldText.setText(String.format("$%s", this.gameData.getGold()));
+        anteText.setText(String.format(Locale.US, "%d/8",
+                this.gameData.getAnte().getAnteValue()));
+        roundText.setText(this.gameData.getRound());
 
-        gameData.getAnte().updateBlinds();
-        smallBlindPointsText.setText(gameData.getAnte().getSmallBlind());
-        bigBlindPointsText.setText(gameData.getAnte().getBigBlind());
-        bossBlindName.setText(gameData.getAnte().getBossName());
-        bossBlindPointsText.setText(gameData.getAnte().getBossBlind());
-        bossBlindEffectText.setText(gameData.getAnte().getBossEffectText());
+        this.gameData.getAnte().updateBlinds();
+        smallBlindPointsText.setText(this.gameData.getAnte().getSmallBlind());
+        bigBlindPointsText.setText(this.gameData.getAnte().getBigBlind());
+        bossBlindName.setText(this.gameData.getAnte().getBossName());
+        bossBlindPointsText.setText(this.gameData.getAnte().getBossBlind());
+        bossBlindEffectText.setText(this.gameData.getAnte().getBossEffectText());
     }
 
     private void disableButtons() {
@@ -143,11 +145,12 @@ public class BalatroBlind extends AppCompatActivity {
         View.OnClickListener blindButtonClickListener = v -> {
             Intent intent = new Intent(BalatroBlind.this, BalatroField.class);
 
-            int stage = (v == smallBlindButton) ? 1 : (v == bigBlindButton) ? 2 : 3;
+            int bigBlind = (v == bigBlindButton) ? 2 : 3;
+            int stage = (v == smallBlindButton) ? 1 : bigBlind;
 
-            gameData.getAnte().setStage(stage);
-            gameData.getAnte().setRound(gameData.getAnte().getRound()+1);
-            GameDataHolder.gameData = gameData;
+            this.gameData.getAnte().setStage(stage);
+            this.gameData.getAnte().setRound(this.gameData.getAnte().getRound()+1);
+            GameDataHolder.gameData = this.gameData;
             startActivity(intent);
         };
 
@@ -164,7 +167,6 @@ public class BalatroBlind extends AppCompatActivity {
         }
 
         jokersContainer.removeAllViews();
-
         List<Joker> jokers = gameData.getJokers();
 
         for (Joker joker : jokers) {
@@ -175,7 +177,7 @@ public class BalatroBlind extends AppCompatActivity {
             jokerImage.setLayoutParams(params);
             jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(joker.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(joker.getName(), DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 jokerImage.setImageResource(drawableId);
             }
@@ -201,7 +203,7 @@ public class BalatroBlind extends AppCompatActivity {
             consumableImage.setLayoutParams(params);
             consumableImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(tarotCard.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(tarotCard.getName(), DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 consumableImage.setImageResource(drawableId);
             }

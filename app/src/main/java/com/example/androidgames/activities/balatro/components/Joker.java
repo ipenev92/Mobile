@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class Joker {
 
     public Joker(String name) {
         this.name = name;
-        updateJokers();
+        this.updateJokers();
     }
 
     private void updateJokers() {

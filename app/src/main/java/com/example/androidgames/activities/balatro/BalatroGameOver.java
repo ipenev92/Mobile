@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;

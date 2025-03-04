@@ -1,11 +1,10 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,15 +53,15 @@ public class BalatroDeckSelection extends AppCompatActivity {
         TextView description = findViewById(R.id.deck_description);
         Button buttonPlay = findViewById(R.id.button_play);
 
-        ImageButton left = findViewById(R.id.button_left_deck);
+        ImageView left = findViewById(R.id.button_left_deck);
         left.setOnClickListener(v -> showPreviousDeck(image, name, description));
 
-        ImageButton right = findViewById(R.id.button_right_deck);
+        ImageView right = findViewById(R.id.button_right_deck);
         right.setOnClickListener(v -> showNextDeck(image, name, description));
 
         buttonPlay.setOnClickListener(v -> {
             Intent intent = new Intent(BalatroDeckSelection.this, BalatroBlind.class);
-            intent.putExtra("deck", decks[currentDeckIndex]);
+            intent.putExtra("deck", this.decks[currentDeckIndex]);
             startActivity(intent);
         });
 
@@ -70,29 +69,30 @@ public class BalatroDeckSelection extends AppCompatActivity {
     }
 
     private void showPreviousDeck(ImageView deckImageView, TextView name, TextView description) {
-        if (currentDeckIndex > 0) {
-            currentDeckIndex--;
+        if (this.currentDeckIndex > 0) {
+            this.currentDeckIndex--;
         } else {
-            currentDeckIndex = decks.length - 1;
+            this.currentDeckIndex = this.decks.length - 1;
         }
         updateDeckDisplay(deckImageView, name, description);
     }
 
     private void showNextDeck(ImageView image, TextView name, TextView description) {
-        if (currentDeckIndex < decks.length - 1) {
-            currentDeckIndex++;
+        if (this.currentDeckIndex < this.decks.length - 1) {
+            this.currentDeckIndex++;
         } else {
-            currentDeckIndex = 0;
+            this.currentDeckIndex = 0;
         }
         updateDeckDisplay(image, name, description);
     }
 
     private void updateDeckDisplay(ImageView image, TextView name, TextView description) {
-        String currentDeck = decks[currentDeckIndex];
-        int imageResId = getResources().getIdentifier(currentDeck, "drawable", getPackageName());
+        String currentDeck = this.decks[this.currentDeckIndex];
+        int imageResId = getResources().getIdentifier(currentDeck, "drawable",
+                getPackageName());
         image.setImageResource(imageResId);
 
-        name.setText(deckNames[currentDeckIndex]);
-        description.setText(deckDescriptions[currentDeckIndex]);
+        name.setText(this.deckNames[this.currentDeckIndex]);
+        description.setText(this.deckDescriptions[this.currentDeckIndex]);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.androidgames.activities.MovingGame;
+package com.example.androidgames.activities.moving_game;
 
 import android.content.ContentValues;
 import android.content.Context;

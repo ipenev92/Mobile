@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidgames.Activities.Balatro.Components.Ante;
-import com.example.androidgames.Activities.Balatro.Components.GameData;
-import com.example.androidgames.Activities.Balatro.Components.GameDataHolder;
-import com.example.androidgames.Activities.Balatro.Components.Joker;
-import com.example.androidgames.Activities.Balatro.Components.TarotCard;
+import com.example.androidgames.activities.balatro.components.Ante;
+import com.example.androidgames.activities.balatro.components.GameData;
+import com.example.androidgames.activities.balatro.components.GameDataHolder;
+import com.example.androidgames.activities.balatro.components.Joker;
+import com.example.androidgames.activities.balatro.components.TarotCard;
 import com.example.androidgames.R;
 
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.Locale;
 
 @SuppressLint("DiscouragedApi")
 public class BalatroWin extends AppCompatActivity {
+    private static final String DRAWABLE = "drawable";
     private GameData gameData;
 
     @Override
@@ -35,9 +36,9 @@ public class BalatroWin extends AppCompatActivity {
         this.gameData = GameDataHolder.gameData;
 
         this.updateGameData();
-        setButtonListener();
-        displayJokers();
-        displayConsumables();
+        this.setButtonListener();
+        this.displayJokers();
+        this.displayConsumables();
     }
 
     private void updateGameData() {
@@ -48,7 +49,7 @@ public class BalatroWin extends AppCompatActivity {
 
         TextView scoreMinText = findViewById(R.id.blind_chips);
         scoreMinText.setText(String.format(Locale.US,
-                "Score at least \n %s", getChipsNeeded()));
+                "Score at least %n %s", getChipsNeeded()));
 
         TextView rewardText = findViewById(R.id.blind_reward);
         rewardText.setText("$".repeat(getReward(this.gameData.getAnte().getStage())));
@@ -69,11 +70,11 @@ public class BalatroWin extends AppCompatActivity {
         handsText.setText(this.gameData.getCurrentHands());
         discardsText.setText(this.gameData.getCurrentDiscards());
         goldText.setText(String.format("$%s", this.gameData.getCurrentGold()));
-        anteText.setText(String.valueOf(this.gameData.getAnte().getAnte()));
+        anteText.setText(String.valueOf(this.gameData.getAnte().getAnteValue()));
         roundText.setText(String.valueOf(this.gameData.getAnte().getRound()));
 
         setBlindImage(this.gameData.getAnte());
-        setDeckImage(gameData.getDeckName());
+        setDeckImage(this.gameData.getDeckName());
 
         this.gameData.setCurrentHands(this.gameData.getHands());
         this.gameData.setCurrentDiscards(this.gameData.getCurrentDiscards());
@@ -83,13 +84,15 @@ public class BalatroWin extends AppCompatActivity {
     }
 
     private String getChipsNeeded() {
-        return this.gameData.getAnte().getStage() == 1 ? this.gameData.getAnte().getSmallBlind() :
-                this.gameData.getAnte().getStage() == 2 ? this.gameData.getAnte().getBigBlind() :
-                        this.gameData.getAnte().getBossBlind();
+        String blind = this.gameData.getAnte().getStage() == 2 ?
+                this.gameData.getAnte().getBigBlind() : this.gameData.getAnte().getBossBlind();
+        return this.gameData.getAnte().getStage() == 1 ?
+                this.gameData.getAnte().getSmallBlind() : blind;
     }
 
     private int getReward(int stage) {
-        return stage == 1 ? 3 : stage == 2 ? 4 : 5;
+        int reward = stage == 2 ? 4 : 5;
+        return stage == 1 ? 3 : reward;
     }
 
     private void setBlindImage(Ante ante) {
@@ -105,14 +108,14 @@ public class BalatroWin extends AppCompatActivity {
         }
 
         int bossImageName = getResources().getIdentifier(image,
-                "drawable", getPackageName());
+                DRAWABLE, getPackageName());
         blindImage.setImageResource(bossImageName);
     }
 
     private void setDeckImage(String deck) {
         ImageView deckImage = findViewById(R.id.deck);
         int deckImageName = getResources().getIdentifier(deck,
-                "drawable", getPackageName());
+                DRAWABLE, getPackageName());
         deckImage.setImageResource(deckImageName);
     }
 
@@ -129,13 +132,13 @@ public class BalatroWin extends AppCompatActivity {
     private void displayJokers() {
         LinearLayout jokersContainer = findViewById(R.id.jokers_container);
 
-        if (jokersContainer == null || gameData == null) {
+        if (jokersContainer == null || this.gameData == null) {
             return;
         }
 
         jokersContainer.removeAllViews();
 
-        List<Joker> jokers = gameData.getJokers();
+        List<Joker> jokers = this.gameData.getJokers();
 
         for (Joker joker : jokers) {
             ImageView jokerImage = new ImageView(this);
@@ -145,7 +148,8 @@ public class BalatroWin extends AppCompatActivity {
             jokerImage.setLayoutParams(params);
             jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(joker.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(joker.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 jokerImage.setImageResource(drawableId);
             }
@@ -161,7 +165,7 @@ public class BalatroWin extends AppCompatActivity {
 
         consumablesContainer.removeAllViews();
 
-        List<TarotCard> tarotCards = gameData.getTarotCards();
+        List<TarotCard> tarotCards = this.gameData.getTarotCards();
 
         for (TarotCard tarotCard : tarotCards) {
             ImageView consumableImage = new ImageView(this);
@@ -171,7 +175,8 @@ public class BalatroWin extends AppCompatActivity {
             consumableImage.setLayoutParams(params);
             consumableImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(tarotCard.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(tarotCard.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 consumableImage.setImageResource(drawableId);
             }

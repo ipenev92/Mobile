@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class TarotCard {
 
     public TarotCard(String name) {
         this.name = name;
-        updateTarot();
+        this.updateTarot();
     }
 
     private void updateTarot() {

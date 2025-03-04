@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class Voucher {
 
     public Voucher(String name) {
         this.name = name;
-        updateVoucher();
+        this.updateVoucher();
     }
 
     private void updateVoucher() {

@@ -1,10 +1,9 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 import lombok.Getter;
-
 @Getter
 public class PlanetData {
     private final Map<HandType, Integer> levels = new EnumMap<>(HandType.class);
@@ -18,10 +17,10 @@ public class PlanetData {
 
     private void initializeDefaultValues() {
         for (HandType type : HandType.values()) {
-            levels.put(type, 1);
-            playedCounts.put(type, 0);
-            chips.put(type, getDefaultChips(type));
-            multipliers.put(type, getDefaultMultiplier(type));
+            this.levels.put(type, 1);
+            this.playedCounts.put(type, 0);
+            this.chips.put(type, getDefaultChips(type));
+            this.multipliers.put(type, getDefaultMultiplier(type));
         }
     }
 
@@ -57,19 +56,25 @@ public class PlanetData {
     }
 
     public int getChipsByHand(HandType type) {
-        return this.chips.getOrDefault(type, 1);
+        Integer chipsValue = this.chips.getOrDefault(type, 1);
+        return (chipsValue != null ? chipsValue : 1);
     }
 
     public int getMultByHand(HandType type) {
-        return this.multipliers.getOrDefault(type, 1);
+        Integer value = this.multipliers.getOrDefault(type, 1);
+        return value != null ? value : 1;
     }
 
     public int getLevelByHand(HandType type) {
-        return this.levels.getOrDefault(type, 1);
+        Integer value = this.levels.getOrDefault(type, 1);
+        return value != null ? value : 1;
     }
 
     public void incrementLevel(HandType type) {
-        this.levels.put(type, this.levels.getOrDefault(type, 0) + 1);
+        Integer currentLevel = this.levels.get(type);
+        if (currentLevel == null) {
+            currentLevel = 0;
+        }
+        this.levels.put(type, currentLevel + 1);
     }
-
 }

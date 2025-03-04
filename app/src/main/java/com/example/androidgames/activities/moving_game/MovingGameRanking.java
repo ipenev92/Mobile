@@ -1,4 +1,6 @@
-package com.example.androidgames.activities.MovingGame;
+package com.example.androidgames.activities.moving_game;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.annotation.SuppressLint;
 import android.database.Cursor;
@@ -10,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.androidgames.R;
 
@@ -61,27 +64,30 @@ public class MovingGameRanking extends AppCompatActivity {
                 row.setPadding(16, 16, 16, 16);
 
                 TableRow.LayoutParams params = new TableRow.LayoutParams(
-                        TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                        WRAP_CONTENT, WRAP_CONTENT);
                 params.setMargins(50, 8, 50, 8);
 
                 TextView nameView = new TextView(this);
                 nameView.setText(String.format("%s. %s", pos, name));
                 nameView.setTextSize(18);
-                nameView.setTextColor(getResources().getColor(android.R.color.black));
+                nameView.setTextColor(ContextCompat
+                        .getColor(this, android.R.color.black));
                 nameView.setLayoutParams(params);
                 nameView.setGravity(Gravity.CENTER_VERTICAL);
 
                 TextView pointsView = new TextView(this);
                 pointsView.setText(String.valueOf(points));
                 pointsView.setTextSize(18);
-                pointsView.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                pointsView.setTextColor(ContextCompat
+                        .getColor(this, android.R.color.holo_blue_dark));
                 pointsView.setLayoutParams(params);
                 pointsView.setGravity(Gravity.CENTER_VERTICAL);
 
                 TextView timeView = new TextView(this);
                 timeView.setText(formattedTime);
                 timeView.setTextSize(18);
-                timeView.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                timeView.setTextColor(ContextCompat
+                        .getColor(this, android.R.color.holo_green_dark));
                 timeView.setLayoutParams(params);
                 timeView.setGravity(Gravity.CENTER_VERTICAL);
 

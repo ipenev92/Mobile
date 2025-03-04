@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,16 +14,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import com.example.androidgames.Activities.Balatro.Components.ConsumableSelectionListener;
-import com.example.androidgames.Activities.Balatro.Components.GameData;
-import com.example.androidgames.Activities.Balatro.Components.GameDataHolder;
-import com.example.androidgames.Activities.Balatro.Components.HandType;
-import com.example.androidgames.Activities.Balatro.Components.Joker;
-import com.example.androidgames.Activities.Balatro.Components.PlanetCard;
-import com.example.androidgames.Activities.Balatro.Components.PlanetData;
-import com.example.androidgames.Activities.Balatro.Components.TarotCard;
-import com.example.androidgames.Activities.Balatro.Components.Voucher;
+import com.example.androidgames.activities.balatro.components.ConsumableSelectionListener;
+import com.example.androidgames.activities.balatro.components.GameData;
+import com.example.androidgames.activities.balatro.components.GameDataHolder;
+import com.example.androidgames.activities.balatro.components.HandType;
+import com.example.androidgames.activities.balatro.components.Joker;
+import com.example.androidgames.activities.balatro.components.PlanetCard;
+import com.example.androidgames.activities.balatro.components.PlanetData;
+import com.example.androidgames.activities.balatro.components.TarotCard;
+import com.example.androidgames.activities.balatro.components.Voucher;
 import com.example.androidgames.R;
 
 import java.lang.reflect.Field;
@@ -36,10 +37,13 @@ import java.util.Random;
 
 @SuppressLint({"DiscouragedApi", "UseCompatLoadingForColorStateLists"})
 public class BalatroShop extends AppCompatActivity implements ConsumableSelectionListener {
+    private static final String DRAWABLE = "drawable";
+    private static final String ERROR = "Error";
     private GameData gameData;
     private ConsumableSelectionListener selectionListener;
     private ImageView selectedCardView = null;
     private String selectedCard = null;
+    private final Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +52,15 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         this.gameData = GameDataHolder.gameData;
+        this.selectionListener = this;
 
         this.updateGameData();
         this.generateJokers();
         this.generateVoucher();
         this.generateConsumables();
-
-        selectionListener = this;
-
-        setupButtonListeners();
-
-        displayJokers();
-        displayConsumables();
+        this.setupButtonListeners();
+        this.displayJokers();
+        this.displayConsumables();
     }
 
     private void updateGameData() {
@@ -71,17 +72,18 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
 
         handsText.setText(this.gameData.getCurrentHands());
         discardsText.setText(this.gameData.getCurrentDiscards());
-        goldText.setText(String.format("$%s", this.gameData.getCurrentGold())); // Updates gold
-        anteText.setText(String.format(Locale.US, "%d/8", gameData.getAnte().getAnte()));
+        goldText.setText(String.format("$%s", this.gameData.getCurrentGold()));
+        anteText.setText(String.format(Locale.US, "%d/8",
+                this.gameData.getAnte().getAnteValue()));
         roundText.setText(String.valueOf(this.gameData.getAnte().getRound()));
 
-        setDeckImage(gameData.getDeckName());
+        setDeckImage(this.gameData.getDeckName());
     }
 
     private void setDeckImage(String deck) {
         ImageView deckImage = findViewById(R.id.deck);
         int deckImageName = getResources().getIdentifier(deck,
-                "drawable", getPackageName());
+                DRAWABLE, getPackageName());
         deckImage.setImageResource(deckImageName);
     }
 
@@ -89,11 +91,10 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         ArrayList<Joker> jokers = getJokers();
 
         if (jokers.size() >= 3) {
-            Random random = new Random();
             HashSet<String> selectedJokers = new HashSet<>();
 
             while (selectedJokers.size() < this.gameData.getShopSize()) {
-                String randomJoker = jokers.get(random.nextInt(jokers.size())).getName();
+                String randomJoker = jokers.get(this.random.nextInt(jokers.size())).getName();
                 selectedJokers.add(randomJoker);
             }
 
@@ -103,7 +104,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
 
                 for (String jokerName : selectedJokers) {
                     int drawableId = getResources().getIdentifier(jokerName,
-                            "drawable", getPackageName());
+                            DRAWABLE, getPackageName());
 
                     if (drawableId != 0) {
                         ImageView jokerImage = getImageView(jokerName, drawableId);
@@ -132,10 +133,9 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         ArrayList<Voucher> vouchers = getVouchers();
 
         if (this.gameData.getAnte().getStage() == 1 && !vouchers.isEmpty()) {
-            Random random = new Random();
-            String randomVoucherName = vouchers.get(random.nextInt(vouchers.size())).getName();
+            String randomVoucherName = vouchers.get(this.random.nextInt(vouchers.size())).getName();
             int drawableId = getResources().getIdentifier(randomVoucherName,
-                    "drawable", getPackageName());
+                    DRAWABLE, getPackageName());
 
             if (drawableId != 0) {
                 runOnUiThread(() -> {
@@ -157,20 +157,19 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         }
     }
 
-
     private void generateConsumables() {
         ArrayList<PlanetCard> planets = getPlanets();
         ArrayList<TarotCard> tarotCards = getTarotCards();
 
         if (!planets.isEmpty() && !tarotCards.isEmpty()) {
-            Random random = new Random();
-            String randomPlanetName = planets.get(random.nextInt(planets.size())).getName();
-            String randomTarotName = tarotCards.get(random.nextInt(tarotCards.size())).getName();
+            String randomPlanetName = planets.get(this.random.nextInt(planets.size())).getName();
+            String randomTarotName = tarotCards.get(this.random.nextInt(tarotCards.size()))
+                    .getName();
 
             int planetDrawableId = getResources().getIdentifier(randomPlanetName,
-                    "drawable", getPackageName());
+                    DRAWABLE, getPackageName());
             int tarotDrawableId = getResources().getIdentifier(randomTarotName,
-                    "drawable", getPackageName());
+                    DRAWABLE, getPackageName());
 
             if (planetDrawableId != 0 && tarotDrawableId != 0) {
                 runOnUiThread(() -> {
@@ -214,7 +213,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     jokers.add(joker);
                 }
             } catch (Exception e) {
-                Log.e("Error", e.toString());
+                Log.e(ERROR, e.toString());
             }
         }
 
@@ -235,7 +234,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     vouchers.add(voucher);
                 }
             } catch (Exception e) {
-                Log.e("Error", e.toString());
+                Log.e(ERROR, e.toString());
             }
         }
 
@@ -256,7 +255,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     planets.add(planet);
                 }
             } catch (Exception e) {
-                Log.e("Error", e.toString());
+                Log.e(ERROR, e.toString());
             }
         }
 
@@ -277,7 +276,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     tarotCards.add(tarotCard);
                 }
             } catch (Exception e) {
-                Log.e("Error", e.toString());
+                Log.e(ERROR, e.toString());
             }
         }
 
@@ -288,171 +287,141 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         ImageView itemImageView = findViewById(R.id.item_image);
         TextView itemTextView = findViewById(R.id.item_text);
         TextView itemPriceView = findViewById(R.id.item_price);
-        Button buyButton = findViewById(R.id.buy_item); // Ensure this ID is correct
+        Button buyButton = findViewById(R.id.buy_item);
 
-        if (buyButton == null) {
-            Log.e("toggleSelection", "buyButton is null! Check your XML ID.");
-            return;
-        }
-
-        if (selectedCard != null && selectedCard.equals(cardName)) {
-            // Deselect the card
-            selectedCard = null;
-            if (selectedCardView != null) {
-                selectedCardView.setBackgroundResource(0);
-                selectedCardView = null;
-            }
-
-            if (itemImageView != null) {
-                itemImageView.setImageDrawable(null);
-            }
-
-            itemTextView.setText("");
-            itemPriceView.setText("");
-
-            // Reset button
-            buyButton.setText("");
-            buyButton.setEnabled(false);
-            buyButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
-
-            Log.d("toggleSelection", "Deselected card. Button cleared.");
-
+        if (isSameSelected(cardName)) {
+            clearSelection(itemImageView, itemTextView, itemPriceView, buyButton);
         } else {
-            if (selectedCardView != null) {
-                selectedCardView.setBackgroundResource(0);
-            }
-
-            selectedCard = cardName;
-            selectedCardView = imageView;
-            selectedCardView.setBackgroundResource(R.drawable.selected_border);
-
-            // Get the card details
-            Object selectedCardObject = getCardByName(cardName);
-            if (selectedCardObject != null) {
-                String cardText = getCardText(selectedCardObject);
-                String cardPrice = getCardPrice(selectedCardObject);
-
-                int drawableId = getResources().getIdentifier(selectedCard, "drawable", getPackageName());
-                if (drawableId != 0 && itemImageView != null) {
-                    itemImageView.setImageResource(drawableId);
-                }
-
-                itemTextView.setText(cardText != null ? cardText : "No description available");
-                itemPriceView.setText(String.format("$%s", cardPrice));
-
-                buyButton.post(() -> {
-                    int priceValue;
-                    try {
-                        priceValue = Integer.parseInt(cardPrice);
-                    } catch (NumberFormatException e) {
-                        Log.e("toggleSelection", "Invalid price value for " + cardName, e);
-                        priceValue = Integer.MAX_VALUE;
-                    }
-
-                    // Ensure gold is valid
-                    int currentGold;
-                    try {
-                        currentGold = Integer.parseInt(this.gameData.getCurrentGold());
-                    } catch (NumberFormatException | NullPointerException e) {
-                        Log.e("toggleSelection", "Invalid gold value", e);
-                        currentGold = 0;
-                    }
-
-                    buyButton.setText(String.format("Buy for $%s", cardPrice));
-                    if (currentGold >= priceValue) {
-                        buyButton.setEnabled(true);
-                        buyButton.setBackgroundTintList(getResources().getColorStateList(R.color.green));
-                    } else {
-                        buyButton.setEnabled(false);
-                        buyButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
-                    }
-                    buyButton.invalidate(); // Force redraw
-                    buyButton.requestLayout(); // Request UI update
-                });
-
-                Log.d("toggleSelection", "Updated button: " + buyButton.getText());
-
-                // Set OnClickListener for the button
-                buyButton.setOnClickListener(v -> buyCard());
-            }
+            updateSelection(imageView, cardName, itemImageView, itemTextView,
+                    itemPriceView, buyButton);
         }
 
-        if (selectionListener != null) {
-            ArrayList<String> selectedList = selectedCard != null
-                    ? new ArrayList<>(Collections.singletonList(selectedCard))
+        notifySelectionListener();
+    }
+
+    private boolean isSameSelected(String cardName) {
+        return this.selectedCard != null && this.selectedCard.equals(cardName);
+    }
+
+    private void clearSelection(ImageView itemImageView, TextView itemTextView,
+                                TextView itemPriceView, Button buyButton) {
+        this.selectedCard = null;
+        if (this.selectedCardView != null) {
+            this.selectedCardView.setBackgroundResource(0);
+            this.selectedCardView = null;
+        }
+        if (itemImageView != null) {
+            itemImageView.setImageDrawable(null);
+        }
+        itemTextView.setText("");
+        itemPriceView.setText("");
+        buyButton.setText("");
+        buyButton.setEnabled(false);
+        buyButton.setBackgroundTintList(ContextCompat
+                .getColorStateList(this, R.color.dark_gray));
+    }
+
+    private void updateSelection(ImageView imageView, String cardName, ImageView itemImageView,
+                                 TextView itemTextView, TextView itemPriceView, Button buyButton) {
+        if (this.selectedCardView != null) {
+            this.selectedCardView.setBackgroundResource(0);
+        }
+
+        this.selectedCard = cardName;
+        this.selectedCardView = imageView;
+        this.selectedCardView.setBackgroundResource(R.drawable.selected_border);
+
+        Object selectedCardObject = getCardByName(cardName);
+        if (selectedCardObject != null) {
+            String cardText = getCardText(selectedCardObject);
+            String cardPrice = getCardPrice(selectedCardObject);
+
+            int drawableId = getResources().getIdentifier(this.selectedCard,
+                    DRAWABLE, getPackageName());
+            if (drawableId != 0 && itemImageView != null) {
+                itemImageView.setImageResource(drawableId);
+            }
+
+            itemTextView.setText(cardText != null ? cardText : "No description available");
+            itemPriceView.setText(String.format("$%s", cardPrice));
+
+            updateBuyButton(buyButton, cardPrice);
+            buyButton.setOnClickListener(v -> buyCard());
+        }
+    }
+
+    private void updateBuyButton(Button buyButton, String cardPrice) {
+        buyButton.post(() -> {
+            buyButton.setText(String.format("Buy for $%s", cardPrice));
+            int currentGold = Integer.parseInt(this.gameData.getCurrentGold());
+            int price = Integer.parseInt(cardPrice);
+            if (currentGold >= price) {
+                buyButton.setEnabled(true);
+                buyButton.setBackgroundTintList(ContextCompat
+                        .getColorStateList(this, R.color.green));
+            } else {
+                buyButton.setEnabled(false);
+                buyButton.setBackgroundTintList(ContextCompat
+                        .getColorStateList(this, R.color.dark_gray));
+            }
+            buyButton.invalidate();
+            buyButton.requestLayout();
+        });
+    }
+
+    private void notifySelectionListener() {
+        if (this.selectionListener != null) {
+            ArrayList<String> selectedList = (this.selectedCard != null)
+                    ? new ArrayList<>(Collections.singletonList(this.selectedCard))
                     : new ArrayList<>();
             try {
-                selectionListener.onSelectionChanged(gameData, selectedList);
+                this.selectionListener.onSelectionChanged(selectedList);
             } catch (Exception e) {
-                Log.e("toggleSelection", "Error in onSelectionChanged()", e);
+                Log.e(ERROR, "Error in onSelectionChanged()", e);
             }
         }
     }
 
     private void buyCard() {
-        if (selectedCard == null) {
+        if (this.selectedCard == null) {
             Toast.makeText(this, "No card selected!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Object selectedCardObject = getCardByName(selectedCard);
-        if (selectedCardObject == null) {
-            Toast.makeText(this, "Error: Card not found!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+        Object selectedCardObject = getCardByName(this.selectedCard);
         String cardPriceStr = getCardPrice(selectedCardObject);
-        int cardPrice;
-        try {
-            cardPrice = Integer.parseInt(cardPriceStr);
-        } catch (NumberFormatException e) {
-            Log.e("buyCard", "Invalid card price for " + selectedCard, e);
-            Toast.makeText(this, "Error: Invalid price!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        int cardPrice = Integer.parseInt(cardPriceStr);
 
-        int currentGold;
-        try {
-            currentGold = Integer.parseInt(this.gameData.getCurrentGold());
-        } catch (NumberFormatException | NullPointerException e) {
-            Log.e("buyCard", "Invalid gold value", e);
-            Toast.makeText(this, "Error: Invalid gold value!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (currentGold < cardPrice) {
+        if (Integer.parseInt(this.gameData.getCurrentGold()) < cardPrice) {
             Toast.makeText(this, "Not enough gold!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        int newGold = currentGold - cardPrice;
+        int newGold = Integer.parseInt(this.gameData.getCurrentGold()) - cardPrice;
         this.gameData.setCurrentGold(String.valueOf(newGold));
 
-        // Handle different item types and update UI
         if (selectedCardObject instanceof Joker) {
             addJokerToCollection((Joker) selectedCardObject);
         } else if (selectedCardObject instanceof PlanetCard) {
-            updatePlanetCard(selectedCard);
+            updatePlanetCard(this.selectedCard);
         } else if (selectedCardObject instanceof Voucher) {
-            applyVoucher(selectedCard);
+            applyVoucher(this.selectedCard);
         } else if (selectedCardObject instanceof TarotCard) {
             addTarotToCollection((TarotCard) selectedCardObject);
         }
 
-        // Remove the selected card from the board
-        if (selectedCardView != null) {
-            ViewGroup parent = (ViewGroup) selectedCardView.getParent();
+        if (this.selectedCardView != null) {
+            ViewGroup parent = (ViewGroup) this.selectedCardView.getParent();
             if (parent != null) {
-                parent.removeView(selectedCardView);
+                parent.removeView(this.selectedCardView);
             }
         }
 
-        // Update UI elements
-        updateGameData();
-        clearItemDetails();
+        this.updateGameData();
+        this.clearItemDetails();
 
-        selectedCard = null;
-        selectedCardView = null;
+        this.selectedCard = null;
+        this.selectedCardView = null;
     }
 
     private void addJokerToCollection(Joker joker) {
@@ -460,7 +429,8 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
 
         if (jokersContainer != null) {
             if (jokersContainer.getChildCount() >= 5) {
-                Toast.makeText(this, "Joker slots are full!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Joker slots are full!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -471,13 +441,14 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
             jokerImage.setLayoutParams(params);
             jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(joker.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(joker.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 jokerImage.setImageResource(drawableId);
             }
 
             jokersContainer.addView(jokerImage);
-            jokersContainer.invalidate();  // Force UI update
+            jokersContainer.invalidate();
 
             this.gameData.getJokers().add(joker);
         }
@@ -494,32 +465,27 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
             tarotImage.setLayoutParams(params);
             tarotImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(tarotCard.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(tarotCard.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 tarotImage.setImageResource(drawableId);
             }
 
             consumablesContainer.addView(tarotImage);
-            consumablesContainer.invalidate();  // Force UI update
+            consumablesContainer.invalidate();
 
             this.gameData.getTarotCards().add(tarotCard);
         }
     }
 
     private void updatePlanetCard(String cardName) {
-        if (gameData == null || gameData.getPlanetData() == null) {
-            Log.e("updatePlanetCard", "GameData or PlanetData is null!");
-            return;
-        }
-
         PlanetData planetData = gameData.getPlanetData();
         HandType correspondingHandType = getHandTypeFromCardName(cardName);
 
         if (correspondingHandType != null) {
             planetData.incrementLevel(correspondingHandType);
-            Log.d("updatePlanetCard", "Increased level for " + correspondingHandType);
         } else {
-            Log.e("updatePlanetCard", "Unknown PlanetCard: " + cardName);
+            Log.e(ERROR, "Unknown PlanetCard: " + cardName);
         }
     }
 
@@ -538,40 +504,26 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
     }
 
     private void applyVoucher(String card) {
-        if (gameData == null) {
-            Log.e("applyVoucher", "GameData is null!");
-            return;
-        }
-
         if (card.equals("voucher_grabber")) {
-            int hands = Integer.parseInt(this.gameData.getHands()) + 1;  // Increase Hands
+            int hands = Integer.parseInt(this.gameData.getHands()) + 1;
             this.gameData.setCurrentHands(String.valueOf(hands));
             this.gameData.setHands(String.valueOf(hands));
 
-            // Update UI Immediately
             runOnUiThread(() -> {
                 TextView handsText = findViewById(R.id.hands);
                 handsText.setText(String.valueOf(hands));
             });
-
-            Log.d("applyVoucher", "Increased hands to " + hands);
-        }
-        else if (card.equals("voucher_wasteful")) {
-            int discards = Integer.parseInt(this.gameData.getDiscards()) + 1;  // Increase Discards
+        } else if (card.equals("voucher_wasteful")) {
+            int discards = Integer.parseInt(this.gameData.getDiscards()) + 1;
             this.gameData.setCurrentDiscards(String.valueOf(discards));
             this.gameData.setDiscards(String.valueOf(discards));
 
-            // Update UI Immediately
             runOnUiThread(() -> {
                 TextView discardsText = findViewById(R.id.discards);
                 discardsText.setText(String.valueOf(discards));
             });
-
-            Log.d("applyVoucher", "Increased discards to " + discards);
-        }
-        else {
+        } else {
             this.gameData.setShopSize(this.gameData.getShopSize() + 1);
-            Log.d("applyVoucher", "Increased shop size to " + this.gameData.getShopSize());
         }
     }
 
@@ -585,15 +537,15 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         if (itemTextView != null) itemTextView.setText("");
         if (itemPriceView != null) itemPriceView.setText("");
 
-        // Reset buy button
         buyButton.setText("");
         buyButton.setEnabled(false);
-        buyButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
+        buyButton.setBackgroundTintList(ContextCompat
+                .getColorStateList(this, R.color.dark_gray));
     }
 
 
     @Override
-    public void onSelectionChanged(GameData gameData, ArrayList<String> cards) {
+    public void onSelectionChanged(ArrayList<String> cards) {
         Log.i("selectedCard", cards.get(0));
     }
 
@@ -656,7 +608,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                 int stage = this.gameData.getAnte().getStage();
                 if (stage == 3) {
                     this.gameData.getAnte().setStage(1);
-                    this.gameData.getAnte().setAnte(this.gameData.getAnte().getAnte() + 1);
+                    this.gameData.getAnte().setAnteValue(this.gameData.getAnte().getAnteValue() + 1);
                 } else {
                     this.gameData.getAnte().setStage(this.gameData.getAnte().getStage() + 1);
                 }
@@ -677,7 +629,8 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         int currentGold = Integer.parseInt(this.gameData.getCurrentGold());
 
         if (currentGold < 5) {
-            Toast.makeText(this, "Not enough gold to reroll!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Not enough gold to reroll!",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -695,10 +648,12 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
         if (rerollButton != null) {
             if (currentGold >= 5) {
                 rerollButton.setEnabled(true);
-                rerollButton.setBackgroundTintList(getResources().getColorStateList(R.color.green));
+                rerollButton.setBackgroundTintList(ContextCompat
+                        .getColorStateList(this, R.color.green));
             } else {
                 rerollButton.setEnabled(false);
-                rerollButton.setBackgroundTintList(getResources().getColorStateList(R.color.dark_gray));
+                rerollButton.setBackgroundTintList(ContextCompat
+                        .getColorStateList(this, R.color.dark_gray));
             }
         }
     }
@@ -722,7 +677,8 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
             jokerImage.setLayoutParams(params);
             jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(joker.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(joker.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 jokerImage.setImageResource(drawableId);
             }
@@ -748,7 +704,8 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
             consumableImage.setLayoutParams(params);
             consumableImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            int drawableId = getResources().getIdentifier(tarotCard.getName(), "drawable", getPackageName());
+            int drawableId = getResources().getIdentifier(tarotCard.getName(),
+                    DRAWABLE, getPackageName());
             if (drawableId != 0) {
                 consumableImage.setImageResource(drawableId);
             }

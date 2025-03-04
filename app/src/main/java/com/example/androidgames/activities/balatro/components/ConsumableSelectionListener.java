@@ -1,7 +1,7 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.ArrayList;
 
 public interface ConsumableSelectionListener {
-    void onSelectionChanged(GameData gameData, ArrayList<String> cards);
+    void onSelectionChanged(ArrayList<String> cards);
 }

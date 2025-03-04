@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +22,8 @@ public class PlanetCard {
                 " and +15 Chips", "3"));
         PLANET_MAP.put("planet_uranus", new PlanetData("Two Pair +2 Mult" +
                 " and +20 Chips", "3"));
-        PLANET_MAP.put("planet_venus", new PlanetData("Three of a Kind +3 Mult" +
-                " and +30 Chips", "3"));
+        PLANET_MAP.put("planet_venus", new PlanetData("Three of a Kind +3 Mult and +30 Chips",
+                "3"));
         PLANET_MAP.put("planet_saturn", new PlanetData("Straight +3 Mult" +
                 " and +30 Chips", "3"));
         PLANET_MAP.put("planet_jupiter", new PlanetData("Flush +2 Mult" +
@@ -38,7 +38,7 @@ public class PlanetCard {
 
     public PlanetCard(String name) {
         this.name = name;
-        updatePlanet();
+        this.updatePlanet();
     }
 
     private void updatePlanet() {

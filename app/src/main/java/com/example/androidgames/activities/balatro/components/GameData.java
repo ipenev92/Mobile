@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro.Components;
+package com.example.androidgames.activities.balatro.components;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class GameData {
     private final String deckName;
     private String round;
     private int roundScore;
-    private String sort_by;
+    private String sortBy;
     private int shopSize;
 
     private Ante ante;
@@ -34,7 +34,7 @@ public class GameData {
         this.round = "0";
         this.roundScore = 0;
         this.deckName = selectedDeck;
-        this.sort_by = "rank";
+        this.sortBy = "rank";
 
         this.hands = getInitialHands(this.deckName);
         this.discards = getInitialDiscards(this.deckName);
@@ -69,6 +69,6 @@ public class GameData {
     }
 
     public static String getInitialGold(String deck) {
-        return Objects.equals(deck, "deck_yellow") ? "14" : "40";
+        return Objects.equals(deck, "deck_yellow") ? "14" : "4";
     }
 }

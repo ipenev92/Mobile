@@ -1,13 +1,13 @@
-package com.example.androidgames.Activities;
+package com.example.androidgames.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidgames.Activities.Balatro.BalatroStart;
-import com.example.androidgames.Activities.MovingGame.MovingGame;
-import com.example.androidgames.Activities.MovingGame.MovingGameRanking;
+import com.example.androidgames.activities.balatro.BalatroStart;
+import com.example.androidgames.activities.moving_game.MovingGame;
+import com.example.androidgames.activities.moving_game.MovingGameRanking;
 import com.example.androidgames.R;
 
 public class MainActivity extends AppCompatActivity {

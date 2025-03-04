@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.Balatro;
+package com.example.androidgames.activities.balatro;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -16,14 +16,12 @@ public class BalatroStart extends AppCompatActivity {
         setContentView(R.layout.balatro_start);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        // Button: Play
         Button buttonPlay = findViewById(R.id.button_play);
         buttonPlay.setOnClickListener(v -> {
             Intent intent = new Intent(BalatroStart.this, BalatroDeckSelection.class);
             startActivity(intent);
         });
 
-        // Button: Exit
         Button buttonExit = findViewById(R.id.button_exit);
         buttonExit.setOnClickListener(v -> finish());
     }
