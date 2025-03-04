@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button buttonExit = findViewById(R.id.button_exit);
-        buttonExit.setOnClickListener(v -> {
-            finish();
-        });
+        buttonExit.setOnClickListener(v -> finish());
     }
 }
