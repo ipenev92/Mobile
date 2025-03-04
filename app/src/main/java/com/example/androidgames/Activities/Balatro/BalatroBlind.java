@@ -1,7 +1,6 @@
 package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import com.example.androidgames.R;
 import java.util.List;
 import java.util.Locale;
 
+@SuppressLint("DiscouragedApi")
 public class BalatroBlind extends AppCompatActivity {
     private GameData gameData;
     private String selectedDeck;

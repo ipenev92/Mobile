@@ -1,5 +1,6 @@
 package com.example.androidgames.Activities.Balatro;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidgames.R;
 
+@SuppressLint("DiscouragedApi")
 public class BalatroDeckSelection extends AppCompatActivity {
     private final String[] decks = {
             "deck_red", "deck_blue", "deck_yellow", "deck_green", "deck_black", "deck_magic",

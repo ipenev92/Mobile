@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.Timer;
 
 @SuppressLint("DiscouragedApi")
 public class BalatroField extends AppCompatActivity {
@@ -241,21 +240,13 @@ public class BalatroField extends AppCompatActivity {
         Button rankButton = findViewById(R.id.rank);
         Button suitButton = findViewById(R.id.suit);
 
-        playButton.setOnClickListener(v -> {
-            playHand();
-        });
+        playButton.setOnClickListener(v -> playHand());
 
-        discardButton.setOnClickListener(v -> {
-            discardHand();
-        });
+        discardButton.setOnClickListener(v -> discardHand());
 
-        rankButton.setOnClickListener(v -> {
-            sortByRank(this.gameData.getPlayingField());
-        });
+        rankButton.setOnClickListener(v -> sortByRank(this.gameData.getPlayingField()));
 
-        suitButton.setOnClickListener(v -> {
-            sortBySuit(this.gameData.getPlayingField());
-        });
+        suitButton.setOnClickListener(v -> sortBySuit(this.gameData.getPlayingField()));
     }
 
     private void playHand() {

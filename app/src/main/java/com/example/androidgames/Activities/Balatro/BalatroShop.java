@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidgames.Activities.Balatro.Components.ConsumableSelectionListener;
@@ -32,7 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-@SuppressLint("DiscouragedApi")
+@SuppressLint({"DiscouragedApi", "UseCompatLoadingForColorStateLists"})
 public class BalatroShop extends AppCompatActivity implements ConsumableSelectionListener {
     private GameData gameData;
     private ConsumableSelectionListener selectionListener;
@@ -103,20 +104,26 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                             "drawable", getPackageName());
 
                     if (drawableId != 0) {
-                        ImageView jokerImage = new ImageView(this);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
-                                ViewGroup.LayoutParams.MATCH_PARENT, 1);
-                        params.setMargins(5, 0, 5, 0);
-                        jokerImage.setLayoutParams(params);
-                        jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        jokerImage.setImageResource(drawableId);
-
-                        jokerImage.setOnClickListener(v -> toggleSelection(jokerImage, jokerName));
+                        ImageView jokerImage = getImageView(jokerName, drawableId);
                         jokersLayout.addView(jokerImage);
                     }
                 }
             });
         }
+    }
+
+    @NonNull
+    private ImageView getImageView(String jokerName, int drawableId) {
+        ImageView jokerImage = new ImageView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        params.setMargins(5, 0, 5, 0);
+        jokerImage.setLayoutParams(params);
+        jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        jokerImage.setImageResource(drawableId);
+
+        jokerImage.setOnClickListener(v -> toggleSelection(jokerImage, jokerName));
+        return jokerImage;
     }
 
     private void generateVoucher() {
@@ -205,7 +212,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     jokers.add(joker);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
         }
 
@@ -226,7 +233,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     vouchers.add(voucher);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
         }
 
@@ -247,7 +254,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     planets.add(planet);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
         }
 
@@ -268,7 +275,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                     tarotCards.add(tarotCard);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("Error", e.toString());
             }
         }
 
@@ -331,15 +338,13 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
                 itemTextView.setText(cardText != null ? cardText : "No description available");
                 itemPriceView.setText(String.format("$%s", cardPrice));
 
-                // **Force button UI to refresh**
                 buyButton.post(() -> {
-                    // Ensure price is valid
                     int priceValue;
                     try {
                         priceValue = Integer.parseInt(cardPrice);
                     } catch (NumberFormatException e) {
                         Log.e("toggleSelection", "Invalid price value for " + cardName, e);
-                        priceValue = Integer.MAX_VALUE; // Prevent accidental purchases
+                        priceValue = Integer.MAX_VALUE;
                     }
 
                     // Ensure gold is valid
@@ -587,7 +592,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
 
     @Override
     public void onSelectionChanged(GameData gameData, ArrayList<String> cards) {
-        Log.i("carddd", cards.get(0));
+        Log.i("selectedCard", cards.get(0));
     }
 
     private Object getCardByName(String cardName) {
