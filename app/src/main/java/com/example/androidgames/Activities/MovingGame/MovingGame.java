@@ -24,6 +24,9 @@ import android.widget.Chronometer;
 import com.example.androidgames.Activities.MainActivity;
 import com.example.androidgames.R;
 
+import lombok.Getter;
+
+@Getter
 @SuppressLint("ClickableViewAccessibility")
 public class MovingGame extends AppCompatActivity {
     private int GRID_SIZE;
@@ -35,11 +38,14 @@ public class MovingGame extends AppCompatActivity {
     private TextView scoreLabel;
     private String playerName;
     private Chronometer chronometer;
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moving_game);
+
+        databaseManager = DatabaseManager.getInstance(this);
 
         requestBoardSize();
         requestPlayerName();
@@ -320,10 +326,14 @@ public class MovingGame extends AppCompatActivity {
 
 
     private void verifyGameState() {
+        long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+
         if (checkVictory()) {
             endGame("You win!");
+            databaseManager.insertPoints(this.playerName, this.score, time);
         } else if (checkGameOver()) {
             endGame("No possible movies. You Lose.");
+            databaseManager.insertPoints(this.playerName, this.score, time);
         }
     }
 

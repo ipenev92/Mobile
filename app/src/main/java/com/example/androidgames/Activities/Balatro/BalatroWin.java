@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class BalatroWin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_win);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         this.gameData = GameDataHolder.gameData;
 

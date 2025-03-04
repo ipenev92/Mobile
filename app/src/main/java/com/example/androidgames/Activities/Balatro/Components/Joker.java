@@ -32,15 +32,9 @@ public class Joker {
                 " Pair", "8"));
         JOKER_MAP.put("joker_family", new JokerData("X4 Mult if played hand contains" +
                 " a Four of a Kind", "8"));
-        JOKER_MAP.put("joker_gluttonous", new JokerData("Played cards with Club suit " +
-                "give +3 Mult when scored", "5"));
-        JOKER_MAP.put("joker_greedy", new JokerData("Played cards with Diamond suit " +
-                "give +3 Mult when scored", "5"));
         JOKER_MAP.put("joker_joker", new JokerData("+4 Mult", "2"));
         JOKER_MAP.put("joker_jolly", new JokerData("+8 Mult if played hand " +
                 "contains a Pair", "3"));
-        JOKER_MAP.put("joker_lusty", new JokerData("Played cards with Heart suit " +
-                "give +3 Mult when scored", "5"));
         JOKER_MAP.put("joker_mad", new JokerData("+10 Mult if played hand contains " +
                 "a Two Pair", "4"));
         JOKER_MAP.put("joker_misprint", new JokerData("+0-23 Mult", "4"));
@@ -56,8 +50,6 @@ public class Joker {
                 "a Three of a Kind", "8"));
         JOKER_MAP.put("joker_wily", new JokerData("+100 Chips if played hand contains" +
                 " a Three of a Kind", "4"));
-        JOKER_MAP.put("joker_wrathful", new JokerData("Played cards with Spade suit " +
-                "give +3 Mult when scored", "5"));
         JOKER_MAP.put("joker_zany", new JokerData("+12 Mult if played hand contains" +
                 " a Three of a Kind", "4"));
     }

@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ public class BalatroBlind extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_blind);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         if (GameDataHolder.gameData != null) {
             this.gameData = GameDataHolder.gameData;
@@ -106,8 +108,8 @@ public class BalatroBlind extends AppCompatActivity {
         Button bigBlindButton = findViewById(R.id.big_blind_button);
         Button bossBlindButton = findViewById(R.id.boss_blind_button);
 
-        String upcoming = "Upcoming...";
         String select = "Select";
+        String upcoming = "Upcoming...";
         smallBlindButton.setText(upcoming);
         bigBlindButton.setText(upcoming);
         bossBlindButton.setText(upcoming);

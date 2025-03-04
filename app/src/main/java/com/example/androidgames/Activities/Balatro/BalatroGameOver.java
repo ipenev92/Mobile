@@ -1,6 +1,7 @@
 package com.example.androidgames.Activities.Balatro;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -14,6 +15,7 @@ public class BalatroGameOver extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         Button restartButton = findViewById(R.id.restart_button);
         restartButton.setOnClickListener(v -> {

@@ -14,18 +14,18 @@
         android:text="2048" />
 
     <Button
+        android:id="@+id/button_ranking_2048"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="2048 Ranking" />
+
+    <Button
         android:id="@+id/button_balatro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Balatro" />
-
-    <Button
-        android:id="@+id/button_how_to_play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="How to Play" />
 
     <Button
         android:id="@+id/button_exit"

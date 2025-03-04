@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class BalatroShop extends AppCompatActivity implements ConsumableSelectio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_shop);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         this.gameData = GameDataHolder.gameData;
 

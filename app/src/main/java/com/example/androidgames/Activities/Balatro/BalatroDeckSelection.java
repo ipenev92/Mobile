@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -46,6 +47,7 @@ public class BalatroDeckSelection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.deck_selection);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         ImageView image = findViewById(R.id.deckImage);
         TextView name = findViewById(R.id.deck_name);

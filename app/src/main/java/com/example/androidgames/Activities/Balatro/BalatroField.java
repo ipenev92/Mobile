@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class BalatroField extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_field);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         this.gameData = GameDataHolder.gameData;
         this.deck = this.gameData.getDeck().getDeck();
@@ -272,12 +274,10 @@ public class BalatroField extends AppCompatActivity {
         for (PlayingCard card : selectedCards) {
             chips += card.getChips();
             mult += card.getMult();
-
-            chipsText.setText(String.valueOf(chips));
-            multText.setText(String.valueOf(mult));
         }
 
-        int finalScore = chips * mult;
+        int finalScore = getFinalScore(chips, mult, hand);
+
         int roundScoreData = this.gameData.getRoundScore();
         this.gameData.setRoundScore(roundScoreData + finalScore);
         roundScoreText.setText(String.valueOf(this.gameData.getRoundScore()));
@@ -300,6 +300,118 @@ public class BalatroField extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    private int getFinalScore(int chips, int mult, HandType hand) {
+        Random random = new Random();
+        List<Joker> jokers = this.gameData.getJokers();
+        int jokerCount = jokers.size();
+        int currentDiscards = Integer.parseInt(this.gameData.getCurrentDiscards());
+
+        for (Joker joker : jokers) {
+            switch (joker.getName()) {
+                case "joker_abstract": mult += jokerCount * 3; break;
+                case "joker_banner": chips += currentDiscards * 30; break;
+                case "joker_joker": mult += 4; break;
+                case "joker_misprint": mult += random.nextInt(24); break;
+                case "joker_clever":
+                    if (isHandAny(hand, HandType.TWO_PAIR, HandType.FULL_HOUSE)) {
+                        chips += 80;
+                    }
+                    break;
+                case "joker_crafty":
+                    if (hand == HandType.FLUSH) {
+                        chips += 80;
+                    }
+                    break;
+                case "joker_crazy":
+                    if (hand == HandType.STRAIGHT) {
+                        mult += 12;
+                    }
+                    break;
+                case "joker_droll":
+                    if (hand == HandType.FLUSH) {
+                        mult += 10;
+                    }
+                    break;
+                case "joker_duo":
+                    if (isHandAny(hand, HandType.PAIR, HandType.THREE_OF_A_KIND,
+                            HandType.TWO_PAIR, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        mult *= 2;
+                    }
+                    break;
+                case "joker_family":
+                    if (hand == HandType.FOUR_OF_A_KIND) {
+                        mult *= 4;
+                    }
+                    break;
+                case "joker_jolly":
+                    if (isHandAny(hand, HandType.PAIR, HandType.THREE_OF_A_KIND,
+                            HandType.TWO_PAIR, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        mult += 8;
+                    }
+                    break;
+                case "joker_mad":
+                    if (isHandAny(hand, HandType.TWO_PAIR, HandType.FULL_HOUSE)) {
+                        mult += 10;
+                    }
+                    break;
+                case "joker_mystic":
+                    if (currentDiscards == 0) {
+                        mult += 15;
+                    }
+                    break;
+                case "joker_order":
+                    if (hand == HandType.STRAIGHT) {
+                        mult *= 3;
+                    }
+                    break;
+                case "joker_sly":
+                    if (isHandAny(hand, HandType.PAIR, HandType.THREE_OF_A_KIND,
+                            HandType.TWO_PAIR, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        chips += 50;
+                    }
+                    break;
+                case "joker_tribe":
+                    if (hand == HandType.FLUSH) {
+                        mult *= 2;
+                    }
+                    break;
+                case "joker_trio":
+                    if (isHandAny(hand, HandType.THREE_OF_A_KIND, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        mult *= 3;
+                    }
+                    break;
+                case "joker_wily":
+                    if (isHandAny(hand, HandType.THREE_OF_A_KIND, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        chips += 100;
+                    }
+                    break;
+                case "joker_zany":
+                    if (isHandAny(hand, HandType.THREE_OF_A_KIND, HandType.FULL_HOUSE,
+                            HandType.FOUR_OF_A_KIND)) {
+                        mult += 12;
+                    }
+                    break;
+                default: {}
+            }
+        }
+        return chips * mult;
+    }
+
+    private boolean isHandAny(HandType hand, HandType... types) {
+        for (HandType type : types) {
+            if (hand == type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void discardHand() {
         if (this.selectedCards.isEmpty()) {

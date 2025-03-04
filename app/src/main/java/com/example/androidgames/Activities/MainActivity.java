@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidgames.Activities.Balatro.BalatroStart;
 import com.example.androidgames.Activities.MovingGame.MovingGame;
+import com.example.androidgames.Activities.MovingGame.MovingGameRanking;
 import com.example.androidgames.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,15 +22,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button buttonBalatro = findViewById(R.id.button_balatro);
-        buttonBalatro.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, BalatroStart.class);
+        Button buttonRanking = findViewById(R.id.button_ranking_2048);
+        buttonRanking.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MovingGameRanking.class);
             startActivity(intent);
         });
 
-        Button buttonHowToPlay = findViewById(R.id.button_how_to_play);
-        buttonHowToPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, HowToPlay.class);
+        Button buttonBalatro = findViewById(R.id.button_balatro);
+        buttonBalatro.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BalatroStart.class);
             startActivity(intent);
         });
 
