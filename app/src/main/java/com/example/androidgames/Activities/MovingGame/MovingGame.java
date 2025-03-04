@@ -21,8 +21,6 @@ import java.util.Locale;
 import java.util.Random;
 import android.widget.Chronometer;
 
-import com.example.androidgames.Activities.Balatro.BalatroField;
-import com.example.androidgames.Activities.Balatro.BalatroWin;
 import com.example.androidgames.Activities.MainActivity;
 import com.example.androidgames.R;
 
