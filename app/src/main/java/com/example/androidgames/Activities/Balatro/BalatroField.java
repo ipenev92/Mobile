@@ -1,8 +1,8 @@
 package com.example.androidgames.Activities.Balatro;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,14 +16,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidgames.Activities.Balatro.Components.Ante;
 import com.example.androidgames.Activities.Balatro.Components.CardSelectionListener;
 import com.example.androidgames.Activities.Balatro.Components.GameData;
+import com.example.androidgames.Activities.Balatro.Components.GameDataHolder;
 import com.example.androidgames.Activities.Balatro.Components.HandType;
+import com.example.androidgames.Activities.Balatro.Components.Joker;
 import com.example.androidgames.Activities.Balatro.Components.PlayingCard;
 import com.example.androidgames.Activities.Balatro.Components.PokerHandEvaluator;
+import com.example.androidgames.Activities.Balatro.Components.TarotCard;
 import com.example.androidgames.R;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Timer;
 
 @SuppressLint("DiscouragedApi")
 public class BalatroField extends AppCompatActivity {
@@ -38,14 +43,15 @@ public class BalatroField extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.balatro_field);
 
-        this.gameData = getIntent().getParcelableExtra("gameData");
-
+        this.gameData = GameDataHolder.gameData;
         this.deck = this.gameData.getDeck().getDeck();
         this.deckCopy = new ArrayList<>(deck);
 
         updateGameData();
         drawCardsToBoard();
         setButtonListeners();
+        displayJokers();
+        displayConsumables();
     }
 
     private void updateGameData() {
@@ -70,11 +76,24 @@ public class BalatroField extends AppCompatActivity {
         TextView anteText = findViewById(R.id.ante);
         TextView roundText = findViewById(R.id.round);
 
-        handsText.setText(this.gameData.getHands());
-        discardsText.setText(this.gameData.getDiscards());
-        goldText.setText(this.gameData.getGold());
-        anteText.setText(String.valueOf(this.gameData.getAnte().getAnte()));
+        handsText.setText(this.gameData.getCurrentHands());
+        discardsText.setText(this.gameData.getCurrentDiscards());
+        goldText.setText(String.format("$%s", this.gameData.getCurrentGold()));
+        anteText.setText(String.format(Locale.US, "%d/8", gameData.getAnte().getAnte()));
         roundText.setText(String.valueOf(this.gameData.getAnte().getRound()));
+
+        setDeckImage(gameData.getDeckName());
+
+        Button discardButton = findViewById(R.id.discard);
+        if (Integer.parseInt(this.gameData.getCurrentDiscards()) <= 0) {
+            discardButton.setClickable(false);
+            discardButton.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+
+            Toast.makeText(this, "Out of discards!", Toast.LENGTH_SHORT).show();
+        } else {
+            discardButton.setClickable(true);
+            discardButton.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+        }
     }
 
     private String getBlindName() {
@@ -91,6 +110,13 @@ public class BalatroField extends AppCompatActivity {
         return this.gameData.getAnte().getStage() == 1 ? this.gameData.getAnte().getSmallBlind() :
                 this.gameData.getAnte().getStage() == 2 ? this.gameData.getAnte().getBigBlind() :
                         this.gameData.getAnte().getBossBlind();
+    }
+
+    private void setDeckImage(String deck) {
+        ImageView deckImage = findViewById(R.id.deck);
+        int deckImageName = getResources().getIdentifier(deck,
+                "drawable", getPackageName());
+        deckImage.setImageResource(deckImageName);
     }
 
     private String getReward(int stage) {
@@ -117,55 +143,49 @@ public class BalatroField extends AppCompatActivity {
     private void drawCardsToBoard() {
         Random random = new Random();
         LinearLayout handLayout = findViewById(R.id.hand);
-
-        // Clear UI first
         handLayout.removeAllViews();
 
-        // Ensure PlayingField does not exceed 8 cards
         while (gameData.getPlayingField().size() < 8 && !deckCopy.isEmpty()) {
             int number = random.nextInt(deckCopy.size());
             PlayingCard selectedCard = deckCopy.remove(number);
             gameData.getPlayingField().add(selectedCard);
 
-            // Debugging
-            Log.d("BalatroField", "Drawing card: " + selectedCard.getName());
         }
 
-        // If PlayingField is empty and deckCopy is empty, log an error
         if (gameData.getPlayingField().isEmpty()) {
-            Log.e("BalatroField", "No cards in deck or playing field!");
             return;
         }
 
-        // Draw all cards currently in PlayingField
         float weightPerCard = 1.0f / gameData.getPlayingField().size();
         for (PlayingCard card : gameData.getPlayingField()) {
-            int id = getResources().getIdentifier(card.getName(), "drawable", getPackageName());
+            int id = getResources().getIdentifier(card.getName(),
+                    "drawable", getPackageName());
 
-            if (id == 0) {
-                Log.e("BalatroField", "Card image not found: " + card.getName());
-                continue;
-            }
-
-            ImageView cardImageView = new ImageView(this);
-            cardImageView.setImageResource(id);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    0, ViewGroup.LayoutParams.WRAP_CONTENT, weightPerCard);
-            params.setMargins(10, 10, 10, 10);
-            cardImageView.setLayoutParams(params);
-            cardImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-            // Set tag for selection tracking
-            cardImageView.setTag(card);
-            cardImageView.setOnClickListener(view -> toggleCardSelection(view, card));
-
-            // Add card to the hand layout
+            ImageView cardImageView = getImageView(card, id, weightPerCard);
             handLayout.addView(cardImageView);
         }
 
-        sortByRank(gameData.getPlayingField());
-        updateDeck(deckCopy.size(), deck.size());
+        if (this.gameData.getSort_by().equals("rank")) {
+            sortByRank(this.gameData.getPlayingField());
+        } else {
+            sortBySuit(this.gameData.getPlayingField());
+        }
+        updateDeck(this.deckCopy.size(), this.deck.size());
+    }
+
+    private ImageView getImageView(PlayingCard card, int id, float weightPerCard) {
+        ImageView cardImageView = new ImageView(this);
+        cardImageView.setImageResource(id);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                0, ViewGroup.LayoutParams.WRAP_CONTENT, weightPerCard);
+        params.setMargins(10, 10, 10, 10);
+        cardImageView.setLayoutParams(params);
+        cardImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+        cardImageView.setTag(card);
+        cardImageView.setOnClickListener(view -> toggleCardSelection(view, card));
+        return cardImageView;
     }
 
     private void toggleCardSelection(View view, PlayingCard card) {
@@ -175,7 +195,7 @@ public class BalatroField extends AppCompatActivity {
         } else {
             if (selectedCards.size() < MAX_SELECTED_CARDS) {
                 selectedCards.add(card);
-                view.setBackgroundResource(R.drawable.card_selected_border); // Apply border effect
+                view.setBackgroundResource(R.drawable.card_selected_border);
             } else {
                 Toast.makeText(this, "You can only select up to 5 cards!",
                         Toast.LENGTH_SHORT).show();
@@ -222,7 +242,7 @@ public class BalatroField extends AppCompatActivity {
         Button suitButton = findViewById(R.id.suit);
 
         playButton.setOnClickListener(v -> {
-            playHand(this.gameData.getPlayingField());
+            playHand();
         });
 
         discardButton.setOnClickListener(v -> {
@@ -238,27 +258,27 @@ public class BalatroField extends AppCompatActivity {
         });
     }
 
-    private void playHand(ArrayList<PlayingCard> cards) {
+    private void playHand() {
         if (this.selectedCards.isEmpty()) {
-            Toast.makeText(this, "Select at least one card to discard!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Select at least one card to play!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        HandType hand = getHandType(cards);
 
         TextView chipsText = findViewById(R.id.chips);
         TextView multText = findViewById(R.id.mult);
         TextView currentScoreText = findViewById(R.id.current_score);
         TextView roundScoreText = findViewById(R.id.round_score);
         TextView handsText = findViewById(R.id.hands);
+        TextView blindPoints = findViewById(R.id.chipsNeeded);
 
+        HandType hand = getHandType(this.selectedCards);
         int chips = this.gameData.getPlanetData().getChipsByHand(hand);
         int mult = this.gameData.getPlanetData().getMultByHand(hand);
         int handLevel = this.gameData.getPlanetData().getLevelByHand(hand);
 
         currentScoreText.setText(String.format(Locale.US, "%s - Lvl %d", hand, handLevel));
 
-        for (PlayingCard card : cards) {
+        for (PlayingCard card : selectedCards) {
             chips += card.getChips();
             mult += card.getMult();
 
@@ -276,13 +296,17 @@ public class BalatroField extends AppCompatActivity {
         this.selectedCards.clear();
         drawCardsToBoard();
 
-        int remainingHands = Integer.parseInt(this.gameData.getHands()) - 1;
-        this.gameData.setHands(String.valueOf(remainingHands));
-        handsText.setText(this.gameData.getHands());
+        int remainingHands = Integer.parseInt(this.gameData.getCurrentHands()) - 1;
+        this.gameData.setCurrentHands(String.valueOf(remainingHands));
+        handsText.setText(this.gameData.getCurrentHands());
 
-        TextView blindPoints = findViewById(R.id.chipsNeeded);
         if (this.gameData.getRoundScore() >= Integer.parseInt(blindPoints.getText().toString())) {
-            Log.e("Round passed", "passed");
+            GameDataHolder.gameData = this.gameData;
+            Intent intent = new Intent(BalatroField.this, BalatroWin.class);
+            startActivity(intent);
+        } else if (remainingHands <= 0) {
+            Intent intent = new Intent(BalatroField.this, BalatroGameOver.class);
+            startActivity(intent);
         }
     }
 
@@ -296,11 +320,14 @@ public class BalatroField extends AppCompatActivity {
         this.selectedCards.clear();
         drawCardsToBoard();
 
-        int remainingDiscards = Integer.parseInt(this.gameData.getDiscards()) - 1;
-        this.gameData.setDiscards(String.valueOf(remainingDiscards));
+        int remainingDiscards = Integer.parseInt(this.gameData.getCurrentDiscards()) - 1;
+        this.gameData.setCurrentDiscards(String.valueOf(remainingDiscards));
         TextView discardText = findViewById(R.id.discards);
-        discardText.setText(this.gameData.getDiscards());
+        discardText.setText(this.gameData.getCurrentDiscards());
+
+        updateGameData();
     }
+
 
     private void sortByRank(ArrayList<PlayingCard> playingField) {
         playingField.sort((card1, card2) -> {
@@ -311,6 +338,7 @@ public class BalatroField extends AppCompatActivity {
             return compareSuits(card1.getSuit(), card2.getSuit()); // Sort suits in the given order
         });
 
+        this.gameData.setSort_by("rank");
         refreshBoard();
     }
 
@@ -323,6 +351,7 @@ public class BalatroField extends AppCompatActivity {
             return Integer.compare(getRankValue(card2.getValue()), getRankValue(card1.getValue())); // Sort ranks in descending order within the same suit
         });
 
+        this.gameData.setSort_by("suit");
         refreshBoard();
     }
 
@@ -363,5 +392,60 @@ public class BalatroField extends AppCompatActivity {
             cardImageView.setOnClickListener(view -> toggleCardSelection(view, card));
             handLayout.addView(cardImageView);
         }
+    }
+
+    private void displayJokers() {
+        LinearLayout jokersContainer = findViewById(R.id.jokers_container);
+
+        if (jokersContainer == null || gameData == null) {
+            return;
+        }
+
+        jokersContainer.removeAllViews();
+
+        List<Joker> jokers = gameData.getJokers();
+
+        for (Joker joker : jokers) {
+            ImageView jokerImage = new ImageView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            params.setMargins(5, 5, 5, 5);
+            jokerImage.setLayoutParams(params);
+            jokerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+            int drawableId = getResources().getIdentifier(joker.getName(), "drawable", getPackageName());
+            if (drawableId != 0) {
+                jokerImage.setImageResource(drawableId);
+            }
+
+            jokersContainer.addView(jokerImage);
+        }
+
+        jokersContainer.invalidate();
+    }
+
+    private void displayConsumables() {
+        LinearLayout consumablesContainer = findViewById(R.id.consumables_container);
+
+        consumablesContainer.removeAllViews();
+        List<TarotCard> tarotCards = gameData.getTarotCards();
+
+        for (TarotCard tarotCard : tarotCards) {
+            ImageView consumableImage = new ImageView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            params.setMargins(5, 5, 5, 5);
+            consumableImage.setLayoutParams(params);
+            consumableImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+            int drawableId = getResources().getIdentifier(tarotCard.getName(), "drawable", getPackageName());
+            if (drawableId != 0) {
+                consumableImage.setImageResource(drawableId);
+            }
+
+            consumablesContainer.addView(consumableImage);
+        }
+
+        consumablesContainer.invalidate();
     }
 }

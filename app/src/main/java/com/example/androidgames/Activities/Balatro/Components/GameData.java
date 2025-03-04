@@ -2,9 +2,6 @@ package com.example.androidgames.Activities.Balatro.Components;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -13,29 +10,43 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GameData implements Parcelable {
+public class GameData {
     private String hands;
+    private String currentHands;
     private String discards;
+    private String currentDiscards;
     private String gold;
+    private String currentGold;
+
     private final String deckName;
     private String round;
     private int roundScore;
+    private String sort_by;
+    private int shopSize;
 
     private Ante ante;
     private Deck deck;
     private PlanetData planetData;
     private ArrayList<PlayingCard> playingField;
     private ArrayList<Joker> jokers;
-    private ArrayList<Consumable> consumables;
+    private ArrayList<TarotCard> tarotCards;
+    private ArrayList<Voucher> vouchers;
 
     public GameData(String selectedDeck) {
         this.round = "0";
         this.roundScore = 0;
         this.deckName = selectedDeck;
+        this.sort_by = "rank";
 
         this.hands = getInitialHands(this.deckName);
         this.discards = getInitialDiscards(this.deckName);
         this.gold = getInitialGold(this.deckName);
+
+        this.shopSize = 3;
+
+        this.currentHands = this.hands;
+        this.currentDiscards = this.discards;
+        this.currentGold = this.gold;
 
         this.ante = new Ante(0);
         this.deck = new Deck(this.deckName);
@@ -43,7 +54,8 @@ public class GameData implements Parcelable {
         this.planetData = new PlanetData();
         this.playingField = new ArrayList<>();
         this.jokers = new ArrayList<>();
-        this.consumables = new ArrayList<>();
+        this.tarotCards = new ArrayList<>();
+        this.vouchers = new ArrayList<>();
     }
 
     public static String getInitialHands(String deck) {
@@ -59,55 +71,6 @@ public class GameData implements Parcelable {
     }
 
     public static String getInitialGold(String deck) {
-        return Objects.equals(deck, "deck_yellow") ? "$14" : "$4";
-    }
-
-    /* ========== PARCELABLE ========== */
-    protected GameData(Parcel in) {
-        hands = in.readString();
-        discards = in.readString();
-        gold = in.readString();
-        deckName = in.readString();
-        round = in.readString();
-        roundScore = in.readInt();
-        ante = in.readParcelable(Ante.class.getClassLoader());
-        deck = in.readParcelable(Deck.class.getClassLoader());
-        planetData = in.readParcelable(PlanetData.class.getClassLoader());
-        playingField = in.createTypedArrayList(PlayingCard.CREATOR);
-        jokers = in.createTypedArrayList(Joker.CREATOR);
-        consumables = in.createTypedArrayList(Consumable.CREATOR);
-    }
-
-    public static final Creator<GameData> CREATOR = new Creator<GameData>() {
-        @Override
-        public GameData createFromParcel(Parcel in) {
-            return new GameData(in);
-        }
-
-        @Override
-        public GameData[] newArray(int size) {
-            return new GameData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(hands);
-        parcel.writeString(discards);
-        parcel.writeString(gold);
-        parcel.writeString(deckName);
-        parcel.writeString(round);
-        parcel.writeInt(roundScore);
-        parcel.writeParcelable(ante, flags);
-        parcel.writeParcelable(deck, flags);
-        parcel.writeParcelable(planetData, flags);
-        parcel.writeTypedList(jokers);
-        parcel.writeTypedList(playingField);
-        parcel.writeTypedList(consumables);
+        return Objects.equals(deck, "deck_yellow") ? "14" : "40";
     }
 }

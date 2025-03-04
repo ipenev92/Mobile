@@ -31,6 +31,9 @@
         <activity android:name=".Activities.Balatro.BalatroDeckSelection" />
         <activity android:name=".Activities.Balatro.BalatroBlind" />
         <activity android:name=".Activities.Balatro.BalatroField" />
+        <activity android:name=".Activities.Balatro.BalatroWin" />
+        <activity android:name=".Activities.Balatro.BalatroShop" />
+        <activity android:name=".Activities.Balatro.BalatroGameOver" />
 
         <!-- HowTo Activity -->
         <activity

@@ -109,7 +109,6 @@
         </LinearLayout>
 
         <!-- Remaining Area Split -->
-        <!-- Remaining Area Split -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -164,7 +163,7 @@
                     <TextView
                         android:id="@+id/hands"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
@@ -176,7 +175,7 @@
                     <TextView
                         android:id="@+id/discards"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
@@ -188,7 +187,7 @@
                 <TextView
                     android:id="@+id/gold"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="0dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:background="@android:color/darker_gray"
@@ -206,19 +205,19 @@
                     <TextView
                         android:id="@+id/ante"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="match_parent"
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
-                        android:text="@string/ante"
+                        android:text=""
                         android:textColor="#263238"
                         tools:ignore="NestedWeights" />
 
                     <TextView
                         android:id="@+id/round"
                         android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/darker_gray"
                         android:gravity="center"
@@ -228,39 +227,58 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/right_top"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toEndOf="@id/left_panel"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.35"
+        android:paddingBottom="5dp">
 
-        <TextView
-            android:id="@+id/jokers"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text="@string/jokers"
-            android:textColor="#263238" />
-
-        <TextView
-            android:id="@+id/consumables"
+        <LinearLayout
+            android:id="@+id/jokers_owned"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="100dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
             android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text="@string/consumables"
-            android:textColor="#263238"
-            tools:ignore="VisualLintBounds" />
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="10dp">
+
+            <LinearLayout
+                android:id="@+id/jokers_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
+
+        <LinearLayout
+            android:id="@+id/consumables_owned"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/consumables_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

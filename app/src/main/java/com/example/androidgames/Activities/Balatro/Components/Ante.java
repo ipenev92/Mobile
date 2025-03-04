@@ -2,6 +2,7 @@ package com.example.androidgames.Activities.Balatro.Components;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -10,17 +11,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Ante implements Parcelable {
+public class Ante {
     private int stage;
     private int ante;
     private int round;
-    private final String smallBlind;
-    private final String bigBlind;
-    private final String bossBlind;
-    private final String bossName;
-    private final BossEffect bossEffect;
-    private final String bossEffectText;
-    private final String bossImage;
+    private String smallBlind;
+    private String bigBlind;
+    private String bossBlind;
+    private String bossName;
+    private BossEffect bossEffect;
+    private String bossEffectText;
+    private String bossImage;
 
     public Ante(int ante) {
         this.stage = 1;
@@ -96,7 +97,7 @@ public class Ante implements Parcelable {
     }
 
     private String getSmallBlindPoints() {
-        int[] small = {300, 800, 2000, 5000, 11000, 20000, 35000, 50000};
+        int[] small = {1, 800, 2000, 5000, 11000, 20000, 35000, 50000};
         return String.valueOf(small[this.ante]);
     }
 
@@ -110,46 +111,14 @@ public class Ante implements Parcelable {
         return String.valueOf(effect == BossEffect.WALL ? boss[this.ante] * 2 : boss[this.ante]);
     }
 
-    /* ========== PARCELABLE ========== */
-    protected Ante(Parcel in) {
-        stage = in.readInt();
-        ante = in.readInt();
-        smallBlind = in.readString();
-        bigBlind = in.readString();
-        bossBlind = in.readString();
-        bossName = in.readString();
-        bossEffect = BossEffect.valueOf(in.readString());
-        bossEffectText = in.readString();
-        bossImage = in.readString();
-    }
+    public void updateBlinds() {
+        this.bossEffect = getRandomBossEffect();
+        this.bossName = getBossBlindName();
+        this.bossEffectText = getBossBlindEffectText();
+        this.bossImage = getBossBlindImage();
 
-    public static final Creator<Ante> CREATOR = new Creator<Ante>() {
-        @Override
-        public Ante createFromParcel(Parcel in) {
-            return new Ante(in);
-        }
-
-        @Override
-        public Ante[] newArray(int size) {
-            return new Ante[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeInt(stage);
-        parcel.writeInt(ante);
-        parcel.writeString(smallBlind);
-        parcel.writeString(bigBlind);
-        parcel.writeString(bossBlind);
-        parcel.writeString(bossName);
-        parcel.writeString(bossEffect.name());
-        parcel.writeString(bossEffectText);
-        parcel.writeString(bossImage);
+        this.smallBlind = getSmallBlindPoints();
+        this.bigBlind = getBigBlindPoints();
+        this.bossBlind = getBossBlindPoints(this.bossEffect);
     }
 }

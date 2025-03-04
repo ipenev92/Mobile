@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlayingCard extends Card implements Parcelable {
+public class PlayingCard extends Card {
     private String value;
     private String suit;
     private Enhancement enhancement;
@@ -24,11 +24,11 @@ public class PlayingCard extends Card implements Parcelable {
         this.enhancement = enhancement;
         this.seal = seal;
         this.chips = getCardChips();
-        this.mult = 1;
+        this.mult = 0;
     }
 
     private int getCardChips() {
-        switch (this.getName()) {
+        switch (this.getValue()) {
             case "ace": return 11;
             case "king": case "queen": case "jack": case "10": return 10;
             case "9": return 9;
@@ -42,44 +42,4 @@ public class PlayingCard extends Card implements Parcelable {
             default: return 0;
         }
     }
-
-    /* ========== PARCELABLE ========== */
-    protected PlayingCard(Parcel in) {
-        super(in.readString(), (Edition) in.readSerializable()); // Read parent properties
-        value = in.readString();
-        suit = in.readString();
-        enhancement = (Enhancement) in.readSerializable();
-        seal = (Seal) in.readSerializable();
-        chips = in.readInt();
-        mult = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getName());
-        dest.writeSerializable(getEdition());
-        dest.writeString(value);
-        dest.writeString(suit);
-        dest.writeSerializable(enhancement);
-        dest.writeSerializable(seal);
-        dest.writeInt(chips);
-        dest.writeInt(mult);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<PlayingCard> CREATOR = new Creator<PlayingCard>() {
-        @Override
-        public PlayingCard createFromParcel(Parcel in) {
-            return new PlayingCard(in);
-        }
-
-        @Override
-        public PlayingCard[] newArray(int size) {
-            return new PlayingCard[size];
-        }
-    };
 }

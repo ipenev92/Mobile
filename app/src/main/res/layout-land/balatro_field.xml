@@ -310,27 +310,48 @@
         app:layout_constraintHeight_percent="0.35"
         android:paddingBottom="5dp">
 
-        <TextView
-            android:id="@+id/jokers"
-            android:layout_width="350dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text="@string/jokers"
-            android:textColor="#263238" />
-
-        <TextView
-            android:id="@+id/consumables"
+        <LinearLayout
+            android:id="@+id/jokers_owned"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="100dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
             android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text="@string/consumables"
-            android:textColor="#263238"
-            tools:ignore="VisualLintBounds" />
+            android:padding="8dp"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="10dp">
+
+            <LinearLayout
+                android:id="@+id/jokers_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"/>
+
+        <LinearLayout
+            android:id="@+id/consumables_owned"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:background="@android:color/darker_gray"
+            android:padding="8dp"
+            android:gravity="center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/consumables_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

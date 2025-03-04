@@ -1,16 +1,12 @@
 package com.example.androidgames.Activities.Balatro.Components;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
 import java.util.EnumMap;
 import java.util.Map;
 
 import lombok.Getter;
 
 @Getter
-public class PlanetData implements Parcelable {
+public class PlanetData {
     private final Map<HandType, Integer> levels = new EnumMap<>(HandType.class);
     private final Map<HandType, Integer> chips = new EnumMap<>(HandType.class);
     private final Map<HandType, Integer> multipliers = new EnumMap<>(HandType.class);
@@ -95,42 +91,5 @@ public class PlanetData implements Parcelable {
 
     public void incrementPlayed(HandType type) {
         this.playedCounts.put(type, this.playedCounts.getOrDefault(type, 0) + 1);
-    }
-
-    /* ========== PARCELABLE IMPLEMENTATION ========== */
-    protected PlanetData(Parcel in) {
-        for (HandType type : HandType.values()) {
-            levels.put(type, in.readInt());
-            playedCounts.put(type, in.readInt());
-            chips.put(type, in.readInt());
-            multipliers.put(type, in.readInt());
-        }
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        for (HandType type : HandType.values()) {
-            parcel.writeInt(levels.getOrDefault(type, 1));
-            parcel.writeInt(playedCounts.getOrDefault(type, 0));
-            parcel.writeInt(chips.getOrDefault(type, getDefaultChips(type)));
-            parcel.writeInt(multipliers.getOrDefault(type, getDefaultMultiplier(type)));
-        }
-    }
-
-    public static final Creator<PlanetData> CREATOR = new Creator<PlanetData>() {
-        @Override
-        public PlanetData createFromParcel(Parcel in) {
-            return new PlanetData(in);
-        }
-
-        @Override
-        public PlanetData[] newArray(int size) {
-            return new PlanetData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 }

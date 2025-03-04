@@ -22,40 +22,32 @@
         android:paddingStart="0dp"
         android:paddingEnd="5dp">
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginBottom="5dp"
-            android:background="@android:color/darker_gray"
-            android:gravity="center"
-            android:text=""
-            android:textColor="#263238" />
-
         <TextView
-            android:id="@+id/item_text"
+            android:id="@+id/blind"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="140dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text=""
             android:textColor="#263238" />
 
+        <!-- ROUND SCORE -->
         <TextView
-            android:id="@+id/item_price"
+            android:id="@+id/round_score"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text=""
             android:textColor="#263238" />
 
-        <Button
-            android:id="@+id/buy_item"
+        <!-- CURRENT SCORE -->
+        <TextView
+            android:id="@+id/current_score"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:layout_marginBottom="5dp"
             android:background="@android:color/darker_gray"
             android:gravity="center"
@@ -291,126 +283,116 @@
         app:layout_constraintTop_toBottomOf="@id/right_top"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Left Section (Game UI) -->
+        <!-- Left Section (Remaining Space) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:background="@android:color/darker_gray">
 
-            <!-- Top Section (Buttons + Jokers) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp">
+                android:layout_weight="2"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <!-- Buttons Section (20% width, smaller buttons) -->
-                <LinearLayout
+                <!-- Empty space to center the button -->
+                <View
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:paddingEnd="5dp">
+                    android:layout_weight="0.2" />
 
-                    <Button
-                        android:id="@+id/button_next_round"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#D32F2F"
-                        android:text="Next Round"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"
-                        android:padding="5dp"
-                        android:fontFamily="sans-serif-black"
-                        android:gravity="center"
-                        android:layout_marginBottom="5dp"/>
-
-                    <Button
-                        android:id="@+id/button_reroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#388E3C"
-                        android:text="Reroll $5"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"
-                        android:padding="5dp"
-                        android:fontFamily="sans-serif-black"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <!-- Jokers Section (80% width, with margin) -->
-                <LinearLayout
-                    android:id="@+id/jokers_section"
+                <Button
+                    android:id="@+id/button_continue"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:background="@android:color/darker_gray"
-                    android:gravity="center"
-                    android:layout_marginStart="5dp">
+                    android:layout_weight="0.6"
+                    android:background="#673AB7"
+                    android:text=""
+                    android:textColor="#FFFFFF" />
 
-                    <TextView
-                        android:id="@+id/joker_placeholder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="18sp"
-                        android:textColor="@android:color/black"
-                        android:background="@android:color/darker_gray"/>
-                </LinearLayout>
+                <!-- Empty space to center the button -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2" />
             </LinearLayout>
 
-            <!-- Bottom Section (Vouchers + Packs, with margins) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="horizontal"
-                android:paddingTop="5dp">
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="10dp">
 
-                <!-- Vouchers Section (50% width, with margin) -->
-                <LinearLayout
-                    android:id="@+id/vouchers_section"
+                <ImageView
+                    android:id="@+id/blind_icon"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp">
+                    android:layout_weight="0.2"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_launcher_background" />
 
-                    <TextView
-                        android:id="@+id/voucher_placeholder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="18sp"
-                        android:textColor="@android:color/black"/>
-                </LinearLayout>
-
-                <!-- Packs Section (50% width) -->
-                <LinearLayout
-                    android:id="@+id/consumables_section"
+                <TextView
+                    android:id="@+id/blind_chips"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/darker_gray"
-                    android:gravity="center">
+                    android:layout_weight="0.5"
+                    android:gravity="start"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#263238"
+                    android:layout_marginStart="10dp"/>
 
-                    <TextView
-                        android:id="@+id/consumables_shop"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="18sp"
-                        android:textColor="@android:color/black" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/blind_reward"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="end"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#263238"
+                    android:layout_marginEnd="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                android:orientation="horizontal"
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/gold_gained"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:gravity="top|start"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:textColor="#263238"
+                    android:background="@android:color/darker_gray"
+                    android:layout_marginStart="10dp"/>
+
+                <TextView
+                    android:id="@+id/hand_reward"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="end|top"
+                    android:text="R"
+                    android:textSize="16sp"
+                    android:textColor="#263238"
+                    android:layout_marginEnd="10dp"/>
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Rightmost Section (Deck Container) - UNCHANGED -->
+        <!-- Rightmost Section (Deck Container) -->
         <LinearLayout
             android:id="@+id/deck_container"
             android:layout_width="0dp"
@@ -433,7 +415,7 @@
                 android:gravity="center"
                 android:text="52/52"
                 android:textSize="14sp"
-                android:textColor="@android:color/black" />
+                android:textColor="#263238" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

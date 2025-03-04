@@ -13,7 +13,7 @@ import com.example.androidgames.R;
 import lombok.Getter;
 
 @Getter
-public class Deck implements Parcelable {
+public class Deck {
     private final String deckName;
     private ArrayList<PlayingCard> deck;
 
@@ -92,43 +92,11 @@ public class Deck implements Parcelable {
                             Enhancement.BASE, Edition.BASE, Seal.BASE);
                     deck.add(playingCard);
                 }
-
-
-                deck.get(5).getName();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         return deck;
-    }
-
-    /* ========== PARCELABLE ========== */
-    protected Deck(Parcel in) {
-        deckName = in.readString();
-        deck = in.createTypedArrayList(PlayingCard.CREATOR);
-    }
-
-    public static final Creator<Deck> CREATOR = new Creator<Deck>() {
-        @Override
-        public Deck createFromParcel(Parcel in) {
-            return new Deck(in);
-        }
-
-        @Override
-        public Deck[] newArray(int size) {
-            return new Deck[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(deckName);
-        parcel.writeTypedList(deck);
     }
 }
