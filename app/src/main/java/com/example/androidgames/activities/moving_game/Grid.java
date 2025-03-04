@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.MovingGame;
+package com.example.androidgames.activities.MovingGame;
 
 import com.example.androidgames.R;
 

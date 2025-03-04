@@ -1,4 +1,4 @@
-package com.example.androidgames.Activities.MovingGame;
+package com.example.androidgames.activities.MovingGame;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import java.util.Locale;
 import java.util.Random;
 import android.widget.Chronometer;
 
-import com.example.androidgames.Activities.MainActivity;
+import com.example.androidgames.activities.MainActivity;
 import com.example.androidgames.R;
 
 import lombok.Getter;
