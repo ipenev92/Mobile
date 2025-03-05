@@ -492,7 +492,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="52/52"
+                android:text=""
                 android:textColor="#263238"
                 android:textSize="16sp"
                 android:paddingTop="5dp" />

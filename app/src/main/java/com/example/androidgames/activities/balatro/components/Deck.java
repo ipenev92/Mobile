@@ -55,7 +55,7 @@ public class Deck {
         ArrayList<PlayingCard> deck = new ArrayList<>();
 
         for (PlayingCard card : normalDeck) {
-            if (card.getSuit().equals("Spade") || card.getSuit().equals("Heart")) {
+            if (card.getSuit().equals("spades") || card.getSuit().equals("hearts")) {
                 deck.add(card);
                 deck.add(card);
             }

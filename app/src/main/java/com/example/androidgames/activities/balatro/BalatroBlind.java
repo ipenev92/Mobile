@@ -60,6 +60,10 @@ public class BalatroBlind extends AppCompatActivity {
         this.setButtonListeners();
         this.displayJokers();
         this.displayConsumables();
+
+        TextView deckSize = findViewById(R.id.deck_count);
+        int size = this.gameData.getDeck().getDeckList().size();
+        deckSize.setText(String.format(Locale.US, "%d/%d", size, size));
     }
 
     private void setDeckImage() {
